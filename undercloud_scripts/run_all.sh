@@ -42,6 +42,8 @@ if [ ! $SKIP_OPENSTACK ]; then
   openstack stack delete -y --wait openstack
 fi
 
+set -eu
+
 if [ ! $SKIP_CLEANUP ]; then
   $SCRIPTDIR/cleanup_all.sh -y
 fi
@@ -60,4 +62,4 @@ fi
 
 $SCRIPTDIR/05_prepare_openshift.sh
 $SCRIPTDIR/06_deploy_openshift.sh
-$SCRIPTDIR/07_openshift_ansible.sh
+# $SCRIPTDIR/07_openshift_ansible.sh
