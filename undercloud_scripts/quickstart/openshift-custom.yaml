@@ -1,0 +1,7 @@
+parameter_defaults:
+  OpenShiftMasterCount: 1
+  OpenShiftWorkerCount: 2
+  OpenShiftGlusterDisks:
+    - /dev/vdb
+    - /dev/vdc
+    - /dev/vdd

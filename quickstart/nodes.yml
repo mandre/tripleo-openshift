@@ -1,0 +1,95 @@
+# Deploy two node OpenStack with additional nodes for Openshift
+control_memory: 8192
+compute_memory: 8192
+openshift_memory: 4096
+
+undercloud_memory: 12288
+
+# Giving the undercloud additional CPUs can greatly improve heat's
+# performance (and result in a shorter deploy time).
+# Using a total of 10 vcpus (1 is the default for overcloud nodes)
+undercloud_vcpu: 4
+
+default_vcpu: 2
+
+overcloud_nodes:
+  - name: openstack_controller_0
+    flavor: control
+    virtualbmc_port: 6230
+
+  - name: openstack_compute_0
+    flavor: compute
+    virtualbmc_port: 6231
+
+  - name: openshift_master_0
+    flavor: openshift_master
+    virtualbmc_port: 6232
+
+  - name: openshift_dev_master_0
+    flavor: openshift_master2
+    virtualbmc_port: 6233
+
+  - name: openshift_worker_0
+    flavor: openshift_worker
+    virtualbmc_port: 6234
+
+  - name: openshift_dev_worker_0
+    flavor: openshift_worker2
+    virtualbmc_port: 6235
+
+  - name: openshift_worker_1
+    flavor: openshift_worker
+    virtualbmc_port: 6236
+
+  - name: openshift_dev_worker_1
+    flavor: openshift_worker2
+    virtualbmc_port: 6237
+
+
+node_count: 8
+
+extradisks_size: '{{openshift_disk|default(default_disk)}}G'
+
+flavors:
+  compute:
+    memory: '{{compute_memory|default(default_memory)}}'
+    disk: '{{compute_disk|default(default_disk)}}'
+    vcpu: '{{compute_vcpu|default(default_vcpu)}}'
+
+  control:
+    memory: '{{control_memory|default(default_memory)}}'
+    disk: '{{control_disk|default(default_disk)}}'
+    vcpu: '{{control_vcpu|default(default_vcpu)}}'
+
+  openshift_master:
+    memory: '{{openshift_memory|default(default_memory)}}'
+    disk: '{{openshift_disk|default(default_disk)}}'
+    vcpu: '{{openshift_vcpu|default(default_vcpu)}}'
+    extradisks: true
+
+  openshift_worker:
+    memory: '{{openshift_memory|default(default_memory)}}'
+    disk: '{{openshift_disk|default(default_disk)}}'
+    vcpu: '{{openshift_vcpu|default(default_vcpu)}}'
+    extradisks: true
+
+  openshift_master2:
+    memory: '{{openshift_memory|default(default_memory)}}'
+    disk: '{{openshift_disk|default(default_disk)}}'
+    vcpu: '{{openshift_vcpu|default(default_vcpu)}}'
+    extradisks: true
+
+  openshift_worker2:
+    memory: '{{openshift_memory|default(default_memory)}}'
+    disk: '{{openshift_disk|default(default_disk)}}'
+    vcpu: '{{openshift_vcpu|default(default_vcpu)}}'
+    extradisks: true
+
+  undercloud:
+    memory: '{{undercloud_memory|default(undercloud_memory)}}'
+    disk: '{{undercloud_disk|default(undercloud_disk)}}'
+    vcpu: '{{undercloud_vcpu|default(undercloud_vcpu)}}'
+
+topology: >-
+  --compute-scale 1
+  --control-scale 1
