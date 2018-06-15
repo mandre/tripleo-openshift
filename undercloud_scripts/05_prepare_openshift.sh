@@ -103,17 +103,11 @@ parameter_defaults:
 
   DockerInsecureRegistryAddress: $LOCAL_IP:8787
 
+  OpenShiftAnsiblePlaybook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
+
   # NOTE(flaper87): This should be 3.10
   # eventually
   OpenShiftGlobalVariables:
-    openshift_version: '${OPENSHIFT_VERSION}'
-    openshift_release: '3.9'
-    openshift_image_tag: '${OPENSHIFT_IMAGE_TAG}'
-    enable_excluders: false
-    openshift_deployment_type: origin
-    openshift_docker_selinux_enabled: false
-    # NOTE(flaper87): Needed for the gate
-    openshift_disable_check: package_availability,package_version,disk_availability,docker_storage,memory_availability,docker_image_availability
 
     # Allow all auth
     # https://docs.openshift.com/container-platform/3.7/install_config/configuring_authentication.html#overview
@@ -123,9 +117,23 @@ parameter_defaults:
       challenge: true
       kind: AllowAllPasswordIdentityProvider
 
+    openshift_use_external_openvswitch: true
+
     # NOTE(flaper87): Disable services we're not using for now.
     openshift_enable_service_catalog: false
     template_service_broker_install: false
+
+    openshift_enable_excluders: false
+
+    # These 3 variables seem redundant but are all required
+    openshift_release: '3.9'
+    openshift_version: '${OPENSHIFT_VERSION}'
+    openshift_image_tag: '${OPENSHIFT_IMAGE_TAG}'
+
+    openshift_deployment_type: origin
+    openshift_docker_selinux_enabled: false
+    # NOTE(flaper87): Needed for the gate
+    openshift_disable_check: package_availability,package_version,disk_availability,docker_storage,memory_availability,docker_image_availability
 
     # NOTE(flaper87): This allows us to skip the RPM version checks since there
     # are not RPMs for 3.9. Remove as soon as the 3.9 branches are cut and
@@ -133,33 +141,14 @@ parameter_defaults:
     # We are using the containers and there are tags for 3.9 already
     skip_version: true
 
-    # NOTE(flaper87): Local Registry
-    osm_etcd_image: "$LOCAL_IP:8787/latest/etcd"
-    etcd_image: "$LOCAL_IP:8787/latest/etcd"
-
+    # Local Registry
     oreg_url: "$LOCAL_IP:8787/openshift/origin-\${component}:$OPENSHIFT_IMAGE_TAG"
+    etcd_image: "$LOCAL_IP:8787/latest/etcd"
+    osm_etcd_image: "$LOCAL_IP:8787/latest/etcd"
     osm_image: "$LOCAL_IP:8787/openshift/origin"
     osn_image: "$LOCAL_IP:8787/openshift/node"
-    osn_ovs_image: "$LOCAL_IP:8787/openshift/openvswitch"
+    registry_console_prefix: "$LOCAL_IP:8787/cockpit/"
+    __openshift_web_console_prefix: "$LOCAL_IP:8787/openshift/origin-"
     openshift_examples_modify_imagestreams: true
     openshift_docker_additional_registries: "$LOCAL_IP:8787"
-
-    system_images_registry_dict:
-      openshift-enterprise: "$LOCAL_IP:8787"
-      origin: "$LOCAL_IP:8787"
-
-    # NOTE(flaper87): We shouldn't need the following configs
-    # because we are using t-h-t to install and configure docker
-    # Setting them anyway
-    openshift_docker_additional_registries: $LOCAL_IP:8787
-    insecure_registries:
-       - $LOCAL_IP:8787
-
-    docker_options: "--insecure-registry $LOCAL_IP:8787"
-
-    # NOTE(flaper87): This is a d/s only var for now
-    # https://github.com/flaper87/openshift-ansible/commit/c6bc3e98316e5aab45015bc6b135ac31494b548d
-    openshift_use_external_openvswitch: true
-
-  OpenShiftAnsiblePlaybook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
 EOF
