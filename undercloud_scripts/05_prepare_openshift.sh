@@ -5,32 +5,6 @@ source $SCRIPTDIR/common.sh
 
 set -x
 
-# Get version from openshift-release
-OPENSHIFT_VERSION=3.9.0
-OPENSHIFT_IMAGE_TAG="v${OPENSHIFT_VERSION}"
-
-CONTAINER_IMAGES="
-docker.io/cockpit/kubernetes:latest
-docker.io/openshift/node:${OPENSHIFT_IMAGE_TAG}
-docker.io/openshift/origin-deployer:${OPENSHIFT_IMAGE_TAG}
-docker.io/openshift/origin-docker-registry:${OPENSHIFT_IMAGE_TAG}
-docker.io/openshift/origin-haproxy-router:${OPENSHIFT_IMAGE_TAG}
-docker.io/openshift/origin-pod:${OPENSHIFT_IMAGE_TAG}
-docker.io/openshift/origin-web-console:${OPENSHIFT_IMAGE_TAG}
-docker.io/openshift/origin:${OPENSHIFT_IMAGE_TAG}
-registry.fedoraproject.org/latest/etcd:latest
-"
-
-for image in $CONTAINER_IMAGES; do
-  if [ -z ${SKIP_PULL+x} ];
-  then
-      docker pull ${image}
-  fi
-  local_image="$LOCAL_IP:8787/${image#*\/}"
-  docker tag ${image} ${local_image}
-  docker push ${local_image}
-done
-
 # Generate a roles_data with Openshift roles
 # FIXME need a t-h-t patch to add these roles
 #openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/roles -o $HOME/openshift_roles_data.yaml OpenShiftMaster OpenShiftWorker
@@ -127,8 +101,8 @@ parameter_defaults:
 
     # These 3 variables seem redundant but are all required
     openshift_release: '3.9'
-    openshift_version: '${OPENSHIFT_VERSION}'
-    openshift_image_tag: '${OPENSHIFT_IMAGE_TAG}'
+    openshift_version: '3.9.0'
+    openshift_image_tag: 'v3.9.0'
 
     openshift_deployment_type: origin
     openshift_docker_selinux_enabled: false
@@ -142,7 +116,7 @@ parameter_defaults:
     skip_version: true
 
     # Local Registry
-    oreg_url: "$LOCAL_IP:8787/openshift/origin-\${component}:$OPENSHIFT_IMAGE_TAG"
+    oreg_url: "$LOCAL_IP:8787/openshift/origin-\${component}:v3.9.0"
     etcd_image: "$LOCAL_IP:8787/latest/etcd"
     osm_etcd_image: "$LOCAL_IP:8787/latest/etcd"
     osm_image: "$LOCAL_IP:8787/openshift/origin"
@@ -152,3 +126,15 @@ parameter_defaults:
     openshift_examples_modify_imagestreams: true
     openshift_docker_additional_registries: "$LOCAL_IP:8787"
 EOF
+
+# Prepare container images
+openstack overcloud container image prepare \
+  --push-destination $LOCAL_IP:8787 \
+  --output-env-file $HOME/openshift_docker_images.yaml \
+  --output-images-file $HOME/openshift_containers.yaml \
+  -e $HOME/tripleo-heat-templates/environments/openshift.yaml \
+  -e $HOME/openshift_env.yaml \
+  -e $SCRIPTDIR/$TARGET/openshift-custom.yaml \
+  -r $HOME/openshift_roles_data.yaml
+
+openstack overcloud container image upload --config-file $HOME/openshift_containers.yaml
