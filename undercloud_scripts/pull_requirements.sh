@@ -61,23 +61,15 @@ if [ ! -d $HOME/tripleo-common ]; then
   # Pass connection info via ansible config file
   # https://review.openstack.org/#/c/568781/
   # Original patch at https://review.openstack.org/#/c/554526/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/81/568781/4 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/81/568781/5 && git cherry-pick FETCH_HEAD
 
   # Add new undeploy_plan workflow
   # https://review.openstack.org/#/c/566246/
   git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/46/566246/6 && git cherry-pick FETCH_HEAD
 
-  # Delete messages container on plan deletion
-  # https://review.openstack.org/#/c/566247/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/47/566247/5 && git cherry-pick FETCH_HEAD
-
   # Stop assuming all containers are plans
   # https://review.openstack.org/#/c/566345/
   git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/45/566345/4 && git cherry-pick FETCH_HEAD
-
-  # Fix ansible tmp dir to mistral working directory
-  # https://review.openstack.org/#/c/575703/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/03/575703/1 && git cherry-pick FETCH_HEAD
 
   sudo rm -Rf /usr/lib/python2.7/site-packages/tripleo_common*
   sudo python setup.py install
@@ -126,7 +118,7 @@ if [ ! -d $HOME/tripleo-ui ]; then
 
   # Run undeploy_plan workflow to delete deployment
   # https://review.openstack.org/#/c/566366/
-  git fetch https://git.openstack.org/openstack/tripleo-ui refs/changes/66/566366/10 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-ui refs/changes/66/566366/12 && git cherry-pick FETCH_HEAD
 
   # Mask Passwords and allow Copy to Clipboard
   # https://review.openstack.org/#/c/562039/
