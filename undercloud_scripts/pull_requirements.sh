@@ -9,10 +9,7 @@ sudo yum -y install \
   ansible \
   curl \
   telnet \
-  vim \
-  epel-release
-
-sudo yum -y install https://dprince.fedorapeople.org/tmate-2.2.1-1.el7.centos.x86_64.rpm || true
+  vim
 
 # This is needed to run a local checkout of the Tripleo-UI
 curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
