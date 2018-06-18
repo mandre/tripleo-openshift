@@ -49,6 +49,14 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/562135/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/35/562135/4 && git cherry-pick FETCH_HEAD
 
+  # Run dispatch script for all unmanaged devices
+  # https://review.openstack.org/#/c/575679/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/79/575679/1 && git cherry-pick FETCH_HEAD
+
+  # Update for openshift 3.9
+  # https://review.openstack.org/#/c/574233/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/33/574233/13 && git cherry-pick FETCH_HEAD
+
   popd
 fi
 

@@ -91,29 +91,8 @@ parameter_defaults:
       challenge: true
       kind: AllowAllPasswordIdentityProvider
 
-    openshift_use_external_openvswitch: true
-
-    # NOTE(flaper87): Disable services we're not using for now.
-    openshift_enable_service_catalog: false
-    template_service_broker_install: false
-
-    openshift_enable_excluders: false
-
-    # These 3 variables seem redundant but are all required
-    openshift_release: '3.9'
-    openshift_version: '3.9.0'
-    openshift_image_tag: 'v3.9.0'
-
-    openshift_deployment_type: origin
-    openshift_docker_selinux_enabled: false
     # NOTE(flaper87): Needed for the gate
     openshift_disable_check: package_availability,package_version,disk_availability,docker_storage,memory_availability,docker_image_availability
-
-    # NOTE(flaper87): This allows us to skip the RPM version checks since there
-    # are not RPMs for 3.9. Remove as soon as the 3.9 branches are cut and
-    # official rpms are built.
-    # We are using the containers and there are tags for 3.9 already
-    skip_version: true
 
     # Local Registry
     oreg_url: "$LOCAL_IP:8787/openshift/origin-\${component}:v3.9.0"
