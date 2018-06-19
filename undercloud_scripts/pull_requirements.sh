@@ -57,6 +57,10 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/574233/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/33/574233/14 && git cherry-pick FETCH_HEAD
 
+  # Add ability to set openshift container images
+  # https://review.openstack.org/#/c/576441/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/576441/2 && git cherry-pick FETCH_HEAD
+
   popd
 fi
 
@@ -73,6 +77,10 @@ if [ ! -d $HOME/tripleo-common ]; then
   # Stop assuming all containers are plans
   # https://review.openstack.org/#/c/566345/
   git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/45/566345/4 && git cherry-pick FETCH_HEAD
+
+  # Use upstream etcd container image for openshift
+  # https://review.openstack.org/#/c/576497/
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/97/576497/1 && git cherry-pick FETCH_HEAD
 
   sudo rm -Rf /usr/lib/python2.7/site-packages/tripleo_common*
   sudo python setup.py install

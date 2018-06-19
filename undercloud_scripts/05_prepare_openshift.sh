@@ -93,17 +93,6 @@ parameter_defaults:
 
     # NOTE(flaper87): Needed for the gate
     openshift_disable_check: package_availability,package_version,disk_availability,docker_storage,memory_availability,docker_image_availability
-
-    # Local Registry
-    oreg_url: "$LOCAL_IP:8787/openshift/origin-\${component}:v3.9.0"
-    etcd_image: "$LOCAL_IP:8787/latest/etcd"
-    osm_etcd_image: "$LOCAL_IP:8787/latest/etcd"
-    osm_image: "$LOCAL_IP:8787/openshift/origin"
-    osn_image: "$LOCAL_IP:8787/openshift/node"
-    registry_console_prefix: "$LOCAL_IP:8787/cockpit/"
-    __openshift_web_console_prefix: "$LOCAL_IP:8787/openshift/origin-"
-    openshift_examples_modify_imagestreams: true
-    openshift_docker_additional_registries: "$LOCAL_IP:8787"
 EOF
 
 # Prepare container images
