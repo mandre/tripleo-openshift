@@ -55,7 +55,7 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
 
   # Update for openshift 3.9
   # https://review.openstack.org/#/c/574233/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/33/574233/13 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/33/574233/14 && git cherry-pick FETCH_HEAD
 
   popd
 fi
@@ -65,11 +65,6 @@ if [ ! -d $HOME/tripleo-common ]; then
 
   # Apply any patches needed
   pushd $HOME/tripleo-common
-
-  # Pass connection info via ansible config file
-  # https://review.openstack.org/#/c/568781/
-  # Original patch at https://review.openstack.org/#/c/554526/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/81/568781/5 && git cherry-pick FETCH_HEAD
 
   # Add new undeploy_plan workflow
   # https://review.openstack.org/#/c/566246/
