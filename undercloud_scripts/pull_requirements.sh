@@ -1,9 +1,9 @@
 #!/bin/bash
 
-source $HOME/stackrc
-
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PATCH_DIR=$SCRIPTDIR/../patches/
+
+source $SCRIPTDIR/common.sh
 
 sudo yum -y install \
   ansible \
@@ -46,11 +46,11 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
 
   # Update for openshift 3.9
   # https://review.openstack.org/#/c/574233/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/33/574233/14 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/33/574233/16 && git cherry-pick FETCH_HEAD
 
   # Add ability to set openshift container images
   # https://review.openstack.org/#/c/576441/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/576441/2 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/576441/7 && git cherry-pick FETCH_HEAD
 
   popd
 fi
@@ -71,7 +71,11 @@ if [ ! -d $HOME/tripleo-common ]; then
 
   # Use upstream etcd container image for openshift
   # https://review.openstack.org/#/c/576497/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/97/576497/1 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/97/576497/3 && git cherry-pick FETCH_HEAD
+
+  # Action to perform container image prepare
+  # https://review.openstack.org/#/c/558972/
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/72/558972/7 && git cherry-pick FETCH_HEAD
 
   sudo rm -Rf /usr/lib/python2.7/site-packages/tripleo_common*
   sudo python setup.py install
@@ -133,6 +137,19 @@ if [ ! -d $HOME/tripleo-ui ]; then
 
   popd
 fi
+
+cat > $HOME/containers-prepare-parameter.yaml <<EOF
+parameter_defaults:
+  DockerInsecureRegistryAddress:
+  - $LOCAL_IP:8787
+  ContainerImagePrepare:
+  - push_destination: "$LOCAL_IP:8787"
+    set:
+      tag: "current-tripleo"
+      namespace: "docker.io/tripleomaster"
+      name_prefix: "centos-binary-"
+      name_suffix: ""
+EOF
 
 # Dirty hack to ease ssh to overcloud nodes
 # Now we can just "ssh overcloud-controller-0"

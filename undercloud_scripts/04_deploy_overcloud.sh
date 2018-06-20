@@ -49,7 +49,7 @@ openstack overcloud deploy \
     -e $HOME/overcloud_env.yaml \
     -e $SCRIPTDIR/$TARGET/network.yaml \
     -e $SCRIPTDIR/$TARGET/openstack-custom.yaml \
-    -e $HOME/docker-images.yaml \
+    -e $HOME/containers-prepare-parameter.yaml \
     -e $HOME/inject-trust-anchor-hiera.yaml
 
 popd
