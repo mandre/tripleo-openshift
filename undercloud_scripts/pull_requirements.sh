@@ -15,14 +15,9 @@ sudo yum -y install \
 curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
 sudo yum -y install nodejs
 
-sudo yum -y install centos-release-openshift-origin
+# NOTE(mandre) use centos-release-openshift-origin instead?
+sudo yum -y install centos-release-openshift-origin39
 sudo yum -y install openshift-ansible-playbooks
-
-# XXX Remove when the rpm installed openshift-ansible contains
-# https://github.com/openshift/openshift-ansible/commit/cc9858ea60
-if sudo patch --dry-run -f -d /usr/share/ansible/openshift-ansible/ -p1 < $PATCH_DIR/openshift-ansible/0001-Allow-for-using-an-external-openvswitch.patch >/dev/null 2>&1; then
-  sudo patch -f -d /usr/share/ansible/openshift-ansible/ -p1 < $PATCH_DIR/openshift-ansible/0001-Allow-for-using-an-external-openvswitch.patch
-fi
 
 # NOTE (alitke): Needed for openshift-metrics install
 #sudo yum -y install java-1.8.0-openjdk-headless
