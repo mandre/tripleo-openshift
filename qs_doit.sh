@@ -65,8 +65,8 @@ fi
 # Use a local clone of t-q-e for easier testing of fixes
 echo "file://$HOME/tripleo-quickstart-extras/" > $HOME/tripleo-quickstart/quickstart-extras-requirements.txt
 
-QUICKSTART_CONFIG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../../quickstart-config"
-CONFIGDIR="$QUICKSTART_CONFIG_DIR/openshift_openstack/quickstart"
+QUICKSTART_CONFIG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+CONFIGDIR="$QUICKSTART_CONFIG_DIR/quickstart"
 
 if [ ! $SKIP_DEPS_CHECK ]; then
   $HOME/tripleo-quickstart/quickstart.sh --install-deps
@@ -99,5 +99,5 @@ echo "---"
 echo "Now we SSH to the undercloud to run the openshift deployment:"
 echo "ssh -F $HOME/.quickstart-shiftstack/ssh.config.ansible undercloud"
 echo "  . stackrc"
-echo "  cd quickstart-config/openshift_openstack/undercloud_scripts/"
+echo "  cd tripleo-openshift/undercloud_scripts/"
 echo "  And run the different scripts in order."
