@@ -65,17 +65,17 @@ if [ ! -d $HOME/tripleo-common ]; then
   # https://review.openstack.org/#/c/566246/
   git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/46/566246/6 && git cherry-pick FETCH_HEAD
 
-  # Stop assuming all containers are plans
-  # https://review.openstack.org/#/c/566345/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/45/566345/4 && git cherry-pick FETCH_HEAD
-
   # Use upstream etcd container image for openshift
   # https://review.openstack.org/#/c/576497/
   git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/97/576497/3 && git cherry-pick FETCH_HEAD
 
+  # Add openshift sti-builder image
+  # https://review.openstack.org/#/c/577426/
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/26/577426/1 && git cherry-pick FETCH_HEAD
+
   # Action to perform container image prepare
   # https://review.openstack.org/#/c/558972/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/72/558972/7 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/72/558972/8 && git cherry-pick FETCH_HEAD
 
   sudo rm -Rf /usr/lib/python2.7/site-packages/tripleo_common*
   sudo python setup.py install
