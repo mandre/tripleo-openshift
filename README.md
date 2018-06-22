@@ -1,4 +1,4 @@
-# quickstart-config
+# tripleo-openshift
 
 Configs/scripts for setting up an environment to deploy OpenShift with TripleO
 with tripleo-quickstart.
@@ -13,7 +13,7 @@ Virtual Environment Setup Complete
 
 Access the undercloud by:
 
-    ssh -F /home/shardy/.quickstart/ssh.config.ansible undercloud
+    ssh -F /home/shardy/.quickstart-shiftstack/ssh.config.ansible undercloud
 
 Follow the documentation in the link below to complete your deployment.
 
@@ -29,6 +29,6 @@ Now we SSH to the undercloud to run the openstack/openshift deployment::
 
   ssh -F /home/shardy/.quickstart-shiftstack/ssh.config.ansible undercloud
   . stackrc
-  cd quickstart-config/openshift_openstack/undercloud_scripts/
+  cd tripleo-openshift/undercloud_scripts/
 
 And run the different scripts in order.
