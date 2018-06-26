@@ -26,7 +26,7 @@ overcloud_nodes:
     virtualbmc_port: 6232
 
   - name: openshift_dev_master_0
-    flavor: openshift_master2
+    flavor: openshift_master
     virtualbmc_port: 6233
 
   - name: openshift_worker_0
@@ -34,15 +34,15 @@ overcloud_nodes:
     virtualbmc_port: 6234
 
   - name: openshift_dev_worker_0
-    flavor: openshift_worker2
+    flavor: openshift_worker
     virtualbmc_port: 6235
 
   - name: openshift_worker_1
-    flavor: openshift_worker
+    flavor: openshift_master
     virtualbmc_port: 6236
 
   - name: openshift_dev_worker_1
-    flavor: openshift_worker2
+    flavor: openshift_master
     virtualbmc_port: 6237
 
 

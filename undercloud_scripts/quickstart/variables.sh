@@ -15,9 +15,9 @@ LOCAL_INTERFACE=eth1
 MIRROR_IP=172.31.9.99
 
 declare -A NODES=(
-[openshift-dev-master-0]=openshift_master2
-[openshift-dev-worker-0]=openshift_worker2
-[openshift-dev-worker-1]=openshift_worker2
+[openshift-dev-master-0]=openshift_master
+[openshift-dev-worker-0]=openshift_master
+[openshift-dev-worker-1]=openshift_master
 [openshift-master-0]=openshift_master
 [openshift-worker-0]=openshift_worker
 [openshift-worker-1]=openshift_worker
