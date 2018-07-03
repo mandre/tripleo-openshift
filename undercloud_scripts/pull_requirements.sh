@@ -40,17 +40,17 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/565182/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/82/565182/4 && git cherry-pick FETCH_HEAD
 
-  # Update capabilities-map
-  # https://review.openstack.org/#/c/562135/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/35/562135/4 && git cherry-pick FETCH_HEAD
-
   # Update for openshift 3.9
   # https://review.openstack.org/#/c/574233/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/33/574233/16 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/33/574233/27 && git cherry-pick FETCH_HEAD
+
+  # Refactor the inventory generation
+  # https://review.openstack.org/#/c/578715/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/15/578715/6 && git cherry-pick FETCH_HEAD
 
   # Add ability to set openshift container images
   # https://review.openstack.org/#/c/576441/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/576441/7 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/576441/14 && git cherry-pick FETCH_HEAD
 
   popd
 fi
@@ -60,10 +60,6 @@ if [ ! -d $HOME/tripleo-common ]; then
 
   # Apply any patches needed
   pushd $HOME/tripleo-common
-
-  # Add new undeploy_plan workflow
-  # https://review.openstack.org/#/c/566246/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/46/566246/6 && git cherry-pick FETCH_HEAD
 
   # Use upstream etcd container image for openshift
   # https://review.openstack.org/#/c/576497/
