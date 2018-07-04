@@ -40,14 +40,6 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/565182/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/82/565182/4 && git cherry-pick FETCH_HEAD
 
-  # Update for openshift 3.9
-  # https://review.openstack.org/#/c/574233/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/33/574233/27 && git cherry-pick FETCH_HEAD
-
-  # Refactor the inventory generation
-  # https://review.openstack.org/#/c/578715/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/15/578715/6 && git cherry-pick FETCH_HEAD
-
   # Add ability to set openshift container images
   # https://review.openstack.org/#/c/576441/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/576441/14 && git cherry-pick FETCH_HEAD
@@ -120,7 +112,7 @@ if [ ! -d $HOME/tripleo-ui ]; then
 
   # Run undeploy_plan workflow to delete deployment
   # https://review.openstack.org/#/c/566366/
-  git fetch https://git.openstack.org/openstack/tripleo-ui refs/changes/66/566366/12 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-ui refs/changes/66/566366/14 && git cherry-pick FETCH_HEAD
 
   # Mask Passwords and allow Copy to Clipboard
   # https://review.openstack.org/#/c/562039/
