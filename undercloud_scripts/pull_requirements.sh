@@ -42,7 +42,19 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
 
   # Add ability to set openshift container images
   # https://review.openstack.org/#/c/576441/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/576441/14 && git cherry-pick FETCH_HEAD
+  # git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/576441/14 && git cherry-pick FETCH_HEAD
+
+  # Add the ability to scaleup the openshift stack
+  # https://review.openstack.org/#/c/578285/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/85/578285/12 && git cherry-pick FETCH_HEAD
+
+  # HA support for OpenShift
+  # https://review.openstack.org/#/c/579609/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/09/579609/7 && git cherry-pick FETCH_HEAD
+
+  # Replace raw_get with dict access syntax
+  # https://review.openstack.org/#/c/579843/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/43/579843/3 && git cherry-pick FETCH_HEAD
 
   popd
 fi
@@ -124,6 +136,12 @@ if [ ! -d $HOME/tripleo-ui ]; then
   $SCRIPTDIR/update-tripleo-ui.sh
 
   popd
+fi
+
+if [ ! -d $HOME/puppet/tripleo ]; then
+  # We need a recent puppet-tripleo for https://review.openstack.org/#/c/579128/
+  git clone git://git.openstack.org/openstack/puppet-tripleo $HOME/puppet/tripleo
+  upload-puppet-modules -d $HOME/puppet/ -c openshift-artifacts
 fi
 
 cat > $HOME/containers-prepare-parameter.yaml <<EOF

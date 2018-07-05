@@ -6,44 +6,7 @@ source $SCRIPTDIR/common.sh
 set -x
 
 # Generate a roles_data with Openshift roles
-# FIXME need a t-h-t patch to add these roles
-#openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/roles -o $HOME/openshift_roles_data.yaml OpenShiftMaster OpenShiftWorker
-cat > $HOME/openshift_roles_data.yaml << EOF
-- name: OpenShiftMaster
-  description: OpenShift master node
-  CountDefault: 1
-  disable_upgrade_deployment: True
-  tags:
-    - primary
-    - controller
-  networks:
-    - External
-    - InternalApi
-    - Storage
-    - StorageMgmt
-    - Tenant
-  ServicesDefault:
-    - OS::TripleO::Services::Docker
-    - OS::TripleO::Services::OpenShift::Master
-    - OS::TripleO::Services::OpenShift::Worker
-    - OS::TripleO::Services::Sshd
-    - OS::TripleO::Services::Ntp
-
-- name: OpenShiftWorker
-  description: OpenShift worker node
-  disable_upgrade_deployment: True
-  CountDefault: 2
-  networks:
-    - InternalApi
-    - Storage
-    - StorageMgmt
-    - Tenant
-  ServicesDefault:
-    - OS::TripleO::Services::Docker
-    - OS::TripleO::Services::OpenShift::Worker
-    - OS::TripleO::Services::Sshd
-    - OS::TripleO::Services::Ntp
-EOF
+openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/roles -o $HOME/openshift_roles_data.yaml OpenShiftMaster OpenShiftWorker
 
 # Get nameservers from the undercloud
 if [ -z "$NAMESERVERS" ]; then
