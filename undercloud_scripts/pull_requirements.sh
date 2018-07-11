@@ -42,19 +42,15 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
 
   # Add ability to set openshift container images
   # https://review.openstack.org/#/c/576441/
-  # git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/576441/14 && git cherry-pick FETCH_HEAD
-
-  # Add the ability to scaleup the openshift stack
-  # https://review.openstack.org/#/c/578285/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/85/578285/12 && git cherry-pick FETCH_HEAD
+  #git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/576441/15 && git cherry-pick FETCH_HEAD
 
   # HA support for OpenShift
   # https://review.openstack.org/#/c/579609/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/09/579609/7 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/09/579609/16 && git cherry-pick FETCH_HEAD
 
   # Replace raw_get with dict access syntax
   # https://review.openstack.org/#/c/579843/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/43/579843/3 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/43/579843/13 && git cherry-pick FETCH_HEAD
 
   popd
 fi
