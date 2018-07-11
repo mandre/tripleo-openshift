@@ -13,6 +13,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   sudo rm -rf $HOME/tripleo-heat-templates \
     $HOME/tripleo-common \
     $HOME/tripleo-ui \
+    $HOME/puppet/tripleo \
     $HOME/python-tripleoclient \
     /usr/share/openshift-ansible \
     $HOME/*_roles_data.yaml \
