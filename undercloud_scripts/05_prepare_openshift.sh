@@ -40,8 +40,6 @@ parameter_defaults:
 
   DockerInsecureRegistryAddress: $LOCAL_IP:8787
 
-  OpenShiftAnsiblePlaybook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
-
   # NOTE(flaper87): This should be 3.10
   # eventually
   OpenShiftGlobalVariables:
