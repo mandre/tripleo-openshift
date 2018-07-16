@@ -42,7 +42,11 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
 
   # Add ability to set openshift container images
   # https://review.openstack.org/#/c/576441/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/576441/16 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/576441/17 && git cherry-pick FETCH_HEAD
+
+  # Set container images for CNS
+  # https://review.openstack.org/#/c/582610/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/10/582610/4 && git cherry-pick FETCH_HEAD
 
   popd
 fi
@@ -53,17 +57,13 @@ if [ ! -d $HOME/tripleo-common ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-common
 
-  # Use upstream etcd container image for openshift
-  # https://review.openstack.org/#/c/576497/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/97/576497/3 && git cherry-pick FETCH_HEAD
-
-  # Add openshift sti-builder image
-  # https://review.openstack.org/#/c/577426/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/26/577426/1 && git cherry-pick FETCH_HEAD
-
   # Add ability to filter container images to modify
   # https://review.openstack.org/#/c/579918/
   git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/18/579918/6 && git cherry-pick FETCH_HEAD
+
+  # Add container images for CNS
+  # https://review.openstack.org/#/c/582609/
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/09/582609/1 && git cherry-pick FETCH_HEAD
 
   # Action to perform container image prepare
   # https://review.openstack.org/#/c/558972/
@@ -116,7 +116,7 @@ if [ ! -d $HOME/tripleo-ui ]; then
 
   # Run undeploy_plan workflow to delete deployment
   # https://review.openstack.org/#/c/566366/
-  git fetch https://git.openstack.org/openstack/tripleo-ui refs/changes/66/566366/14 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-ui refs/changes/66/566366/15 && git cherry-pick FETCH_HEAD
 
   # Mask Passwords and allow Copy to Clipboard
   # https://review.openstack.org/#/c/562039/

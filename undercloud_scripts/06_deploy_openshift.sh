@@ -4,6 +4,7 @@ SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPTDIR/common.sh
 
 # Deploy the openshift stack
+# Add -e $HOME/tripleo-heat-templates/environments/openshift-cns.yaml to deploy with CNS
 pushd $HOME
 openstack overcloud deploy \
   --templates $HOME/tripleo-heat-templates \
