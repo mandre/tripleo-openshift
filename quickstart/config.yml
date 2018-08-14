@@ -34,6 +34,10 @@ network_isolation: true
 network_isolation_type: 'single-nic-vlans'
 
 containerized_overcloud: true
+containerized_undercloud: true
+delete_docker_cache: false
+
+ctlplane_masquerade: true
 
 # Even though SSL isn't enabled for the overcloud we need
 # undercloud_generate_service_certificate or the UI doesn't work

@@ -5,7 +5,7 @@ parameter_defaults:
 
   # NeutronNetworkType: vxlan
   # NeutronTunnelTypes: vxlan
-  NtpServer: 0.north-america.pool.ntp.org
+  #NtpServer: 0.north-america.pool.ntp.org
 
   ExternalNetCidr: 10.0.0.0/24
   ExternalInterfaceDefaultRoute: 10.0.0.1

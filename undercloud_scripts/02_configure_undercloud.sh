@@ -25,6 +25,8 @@ fi
 
 for node_name in "${!NODES[@]}"; do
   openstack baremetal node set ${node_name} --property capabilities="profile:${NODES[$node_name]},boot_option:local"
+  # Workaround for https://bugzilla.redhat.com/show_bug.cgi?id=1606573
+  openstack baremetal node set ${node_name} --deploy-interface iscsi
 done
 
 # Delete default overcloud plan

@@ -40,101 +40,77 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/565182/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/82/565182/4 && git cherry-pick FETCH_HEAD
 
-  # Add ability to set openshift container images
-  # https://review.openstack.org/#/c/576441/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/576441/17 && git cherry-pick FETCH_HEAD
-
-  # Set container images for CNS
-  # https://review.openstack.org/#/c/582610/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/10/582610/7 && git cherry-pick FETCH_HEAD
-
   popd
 fi
 
-if [ ! -d $HOME/tripleo-common ]; then
-  git clone git://git.openstack.org/openstack/tripleo-common $HOME/tripleo-common
+# if [ ! -d $HOME/tripleo-common ]; then
+#   git clone git://git.openstack.org/openstack/tripleo-common $HOME/tripleo-common
 
-  # Apply any patches needed
-  pushd $HOME/tripleo-common
+#   # Apply any patches needed
+#   pushd $HOME/tripleo-common
 
-  # Add ability to filter container images to modify
-  # https://review.openstack.org/#/c/579918/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/18/579918/6 && git cherry-pick FETCH_HEAD
+#   sudo rm -Rf /usr/lib/python2.7/site-packages/tripleo_common*
+#   sudo python setup.py install
+#   sudo cp /usr/share/tripleo-common/sudoers /etc/sudoers.d/tripleo-common
+#   docker restart mistral_executor
+#   docker restart mistral_engine
+#   # this loads the actions via entrypoints
+#   sudo mistral-db-manage populate
 
-  # Add container images for CNS
-  # https://review.openstack.org/#/c/582609/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/09/582609/1 && git cherry-pick FETCH_HEAD
+#   mistral cron-trigger-delete publish-ui-logs-hourly
+#   for workbook in $(openstack workbook list -f value -c Name | grep tripleo); do
+#     openstack workbook delete $workbook
+#   done
+#   for workflow in $(openstack workflow list -f value -c Name | grep tripleo); do
+#     openstack workflow delete $workflow
+#   done
+#   for workbook in $(ls /usr/share/openstack-tripleo-common/workbooks/*); do
+#     openstack workbook create $workbook
+#   done
+#   # Restore cron trigger with updated publish_ui_logs_to_swift workflow
+#   # This ensure we're not affected by https://bugs.launchpad.net/tripleo/+bug/1754061
+#   mistral cron-trigger-create --pattern "0 * * * *" publish-ui-logs-hourly tripleo.plan_management.v1.publish_ui_logs_to_swift
 
-  # Action to perform container image prepare
-  # https://review.openstack.org/#/c/558972/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/72/558972/8 && git cherry-pick FETCH_HEAD
+#   popd
+# fi
 
-  sudo rm -Rf /usr/lib/python2.7/site-packages/tripleo_common*
-  sudo python setup.py install
-  sudo cp /usr/share/tripleo-common/sudoers /etc/sudoers.d/tripleo-common
-  sudo systemctl restart openstack-mistral-executor
-  sudo systemctl restart openstack-mistral-engine
-  # this loads the actions via entrypoints
-  sudo mistral-db-manage populate
+# if [ ! -d $HOME/python-tripleoclient ]; then
+#   git clone git://git.openstack.org/openstack/python-tripleoclient $HOME/python-tripleoclient
 
-  mistral cron-trigger-delete publish-ui-logs-hourly
-  for workbook in $(openstack workbook list -f value -c Name | grep tripleo); do
-    openstack workbook delete $workbook
-  done
-  for workflow in $(openstack workflow list -f value -c Name | grep tripleo); do
-    openstack workflow delete $workflow
-  done
-  for workbook in $(ls /usr/share/openstack-tripleo-common/workbooks/*); do
-    openstack workbook create $workbook
-  done
-  # Restore cron trigger with updated publish_ui_logs_to_swift workflow
-  # This ensure we're not affected by https://bugs.launchpad.net/tripleo/+bug/1754061
-  mistral cron-trigger-create --pattern "0 * * * *" publish-ui-logs-hourly tripleo.plan_management.v1.publish_ui_logs_to_swift
+#   # Apply any patches needed
+#   pushd $HOME/python-tripleoclient
 
-  popd
-fi
+#   # Our setuptools is too old to understand 'lesser than' requirements
+#   # https://docs.openstack.org/pbr/latest/user/compatibility.html#setuptools
+#   sed -i "s/;python_version<'3.3'//" requirements.txt
 
-if [ ! -d $HOME/python-tripleoclient ]; then
-  git clone git://git.openstack.org/openstack/python-tripleoclient $HOME/python-tripleoclient
+#   sudo python setup.py install
+#   popd
+# fi
 
-  # Apply any patches needed
-  pushd $HOME/python-tripleoclient
+# if [ ! -d $HOME/tripleo-ui ]; then
+#   git clone git://git.openstack.org/openstack/tripleo-ui $HOME/tripleo-ui
 
-  # Our setuptools is too old to understand 'lesser than' requirements
-  # https://docs.openstack.org/pbr/latest/user/compatibility.html#setuptools
-  sed -i "s/;python_version<'3.3'//" requirements.txt
+#   # Apply any patches needed
+#   pushd $HOME/tripleo-ui
 
-  sudo python setup.py install
-  popd
-fi
+#   # Mask Passwords and allow Copy to Clipboard
+#   # https://review.openstack.org/#/c/562039/
+#   git fetch https://git.openstack.org/openstack/tripleo-ui refs/changes/39/562039/8 && git cherry-pick FETCH_HEAD
 
-if [ ! -d $HOME/tripleo-ui ]; then
-  git clone git://git.openstack.org/openstack/tripleo-ui $HOME/tripleo-ui
+#   mkdir dist
+#   cp /var/www/openstack-tripleo-ui/dist/tripleo_ui_config.js dist
 
-  # Apply any patches needed
-  pushd $HOME/tripleo-ui
+#   $SCRIPTDIR/update-tripleo-ui.sh
 
-  # Run undeploy_plan workflow to delete deployment
-  # https://review.openstack.org/#/c/566366/
-  git fetch https://git.openstack.org/openstack/tripleo-ui refs/changes/66/566366/15 && git cherry-pick FETCH_HEAD
+#   popd
+# fi
 
-  # Mask Passwords and allow Copy to Clipboard
-  # https://review.openstack.org/#/c/562039/
-  git fetch https://git.openstack.org/openstack/tripleo-ui refs/changes/39/562039/8 && git cherry-pick FETCH_HEAD
-
-  mkdir dist
-  cp /var/www/openstack-tripleo-ui/dist/tripleo_ui_config.js dist
-
-  $SCRIPTDIR/update-tripleo-ui.sh
-
-  popd
-fi
-
-if [ ! -d $HOME/puppet/tripleo ]; then
-  # We need a recent puppet-tripleo for https://review.openstack.org/#/c/579128/
-  git clone git://git.openstack.org/openstack/puppet-tripleo $HOME/puppet/tripleo
-  upload-puppet-modules -d $HOME/puppet/ -c openshift-artifacts
-fi
+# if [ ! -d $HOME/puppet/tripleo ]; then
+#   # We need a recent puppet-tripleo for https://review.openstack.org/#/c/579128/
+#   git clone git://git.openstack.org/openstack/puppet-tripleo $HOME/puppet/tripleo
+#   upload-puppet-modules -d $HOME/puppet/ -c openshift-artifacts
+# fi
 
 cat > $HOME/containers-prepare-parameter.yaml <<EOF
 parameter_defaults:
