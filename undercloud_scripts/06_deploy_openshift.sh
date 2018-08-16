@@ -12,12 +12,13 @@ openstack overcloud deploy \
   --stack ${OPENSHIFT_STACK_NAME} \
   -r $HOME/openshift_roles_data.yaml \
   -e $HOME/tripleo-heat-templates/environments/openshift.yaml \
+  -e $HOME/tripleo-heat-templates/environments/openshift-cns.yaml \
   -e $HOME/tripleo-heat-templates/environments/config-download-environment.yaml \
   -e $HOME/tripleo-heat-templates/environments/network-isolation.yaml \
   -e $HOME/tripleo-heat-templates/environments/net-single-nic-with-vlans.yaml \
   -e $HOME/tripleo-heat-templates/environments/networks-disable.yaml \
   -e $HOME/openshift_env.yaml \
-  -e $HOME/containers-prepare-parameter.yaml \
+  -e $HOME/openshift_docker_images.yaml \
   -e $SCRIPTDIR/$TARGET/network.yaml \
   -e $SCRIPTDIR/$TARGET/openshift-custom.yaml \
   ${OPENSHIFT_STACK_EXTRA_ARGS}
