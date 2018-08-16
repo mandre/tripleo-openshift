@@ -52,18 +52,6 @@ cat > $HOME/${OPENSHIFT_DEMO_STACK_NAME}_roles_data.yaml << EOF
     - OS::TripleO::Services::Ntp
 EOF
 
-# Get nameservers from the undercloud
-if [ -z "$NAMESERVERS" ]; then
-  NAMESERVERS=
-  for n in $(awk 'match($0, /nameserver\s+(([0-9]{1,3}.?){4})/,address){print address[1]}' /etc/resolv.conf); do
-    if [ -z "$NAMESERVERS" ]; then
-      NAMESERVERS="\"$n\""
-    else
-      NAMESERVERS="$NAMESERVERS, \"$n\""
-    fi
-  done
-fi
-
 # Create the openshift config
 # We use the oooq_* flavors to ensure the correct Ironic nodes are used
 # But this currently doesn't enforce predictable placement (which is fine

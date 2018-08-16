@@ -3,18 +3,6 @@
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPTDIR/common.sh
 
-# Get nameservers from the undercloud if not set explicitly in variables.sh
-if [ -z "$NAMESERVERS" ]; then
-  NAMESERVERS=
-  for n in $(awk 'match($0, /nameserver\s+(([0-9]{1,3}.?){4})/,address){print address[1]}' /etc/resolv.conf); do
-    if [ -z "$NAMESERVERS" ]; then
-      NAMESERVERS="\"$n\""
-    else
-      NAMESERVERS="$NAMESERVERS, \"$n\""
-    fi
-  done
-fi
-
 cat > $HOME/overcloud_env.yaml << EOF
 resource_registry:
   OS::TripleO::NodeUserData: $SCRIPTDIR/$TARGET/bootstrap.yaml
