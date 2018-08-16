@@ -40,6 +40,10 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/565182/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/82/565182/4 && git cherry-pick FETCH_HEAD
 
+  # Set container images for CNS
+  # https://review.openstack.org/#/c/582610/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/10/582610/7 && git cherry-pick FETCH_HEAD
+
   popd
 fi
 
