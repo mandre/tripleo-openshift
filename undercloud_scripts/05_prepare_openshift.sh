@@ -49,6 +49,7 @@ openstack overcloud container image prepare \
   --push-destination $LOCAL_IP:8787 \
   --output-env-file $HOME/openshift_docker_images.yaml \
   --output-images-file $HOME/openshift_containers.yaml \
+  -e $HOME/tripleo-heat-templates/environments/docker.yaml \
   -e $HOME/tripleo-heat-templates/environments/openshift.yaml \
   -e $HOME/tripleo-heat-templates/environments/openshift-cns.yaml \
   -e $HOME/openshift_env.yaml \

@@ -44,6 +44,10 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/582610/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/10/582610/7 && git cherry-pick FETCH_HEAD
 
+  # Define keepalived service in environments/docker.yaml
+  # https://review.openstack.org/#/c/593621/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/21/593621/1 && git cherry-pick FETCH_HEAD
+
   popd
 fi
 
