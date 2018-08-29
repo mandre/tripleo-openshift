@@ -48,6 +48,10 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/593621/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/21/593621/1 && git cherry-pick FETCH_HEAD
 
+  # Move to openshift-ansible 3.10
+  # https://review.openstack.org/#/c/582495/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/95/582495/16 && git cherry-pick FETCH_HEAD
+
   popd
 fi
 

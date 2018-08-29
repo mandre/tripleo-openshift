@@ -14,8 +14,8 @@ NAMESERVERS="192.168.23.1"
 
 declare -A NODES=(
 [openshift-dev-master-0]=openshift_master2
-[openshift-dev-worker-0]=openshift_worker2
-[openshift-dev-worker-1]=openshift_worker2
+[openshift-dev-worker-0]=openshift_infra
+[openshift-dev-worker-1]=openshift_infra
 [openshift-master-0]=openshift_master
 [openshift-worker-0]=openshift_worker
 [openshift-worker-1]=openshift_worker
