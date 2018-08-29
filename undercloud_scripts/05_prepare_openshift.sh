@@ -6,7 +6,7 @@ source $SCRIPTDIR/common.sh
 set -x
 
 # Generate a roles_data with Openshift roles
-openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/roles -o $HOME/openshift_roles_data.yaml OpenShiftMaster OpenShiftWorker
+openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/roles -o $HOME/openshift_roles_data.yaml OpenShiftMaster OpenShiftWorker OpenShiftInfra
 
 # Create the openshift config
 # We use the oooq_* flavors to ensure the correct Ironic nodes are used
@@ -23,6 +23,7 @@ parameter_defaults:
 
   OvercloudOpenShiftMasterFlavor: openshift_master
   OvercloudOpenShiftWorkerFlavor: openshift_worker
+  OvercloudOpenShiftInfraFlavor: openshift_infra
 
   DnsServers: [$NAMESERVERS]
 
