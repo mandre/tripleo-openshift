@@ -16,6 +16,9 @@ fi
 if ! openstack flavor show openshift_master >/dev/null 2>&1; then
   openstack flavor create $SIZINGS $RESOURCES --property capabilities:profile=openshift_master openshift_master
 fi
+if ! openstack flavor show openshift_infra >/dev/null 2>&1; then
+  openstack flavor create $SIZINGS $RESOURCES --property capabilities:profile=openshift_infra openshift_infra
+fi
 if ! openstack flavor show openshift_worker2 >/dev/null 2>&1; then
   openstack flavor create $SIZINGS $RESOURCES --property capabilities:profile=openshift_worker2 openshift_worker2
 fi
