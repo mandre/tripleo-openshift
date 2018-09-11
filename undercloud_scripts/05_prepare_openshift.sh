@@ -29,8 +29,6 @@ parameter_defaults:
 
   DockerInsecureRegistryAddress: $LOCAL_IP:8787
 
-  # NOTE(flaper87): This should be 3.10
-  # eventually
   OpenShiftGlobalVariables:
 
     # Allow all auth
