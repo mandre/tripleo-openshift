@@ -41,6 +41,17 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/565182/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/82/565182/4 && git cherry-pick FETCH_HEAD
 
+  # Refactor openshift services for composable roles
+  # https://review.openstack.org/#/c/599618/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/18/599618/4 && git cherry-pick FETCH_HEAD
+
+  # Fix openshift new node detection
+  # https://review.openstack.org/#/c/600012/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/12/600012/3 && git cherry-pick FETCH_HEAD
+
+  # Clean up previous osa inventory dir before deployment
+  # https://review.openstack.org/#/c/600028/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/28/600028/4 && git cherry-pick FETCH_HEAD
 
   # Hook openshift deployment with image prepare
   # https://review.openstack.org/#/c/601277/
