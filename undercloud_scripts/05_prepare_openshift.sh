@@ -42,3 +42,15 @@ parameter_defaults:
     # NOTE(flaper87): Needed for the gate
     openshift_disable_check: package_availability,package_version,disk_availability,docker_storage,memory_availability,docker_image_availability
 EOF
+
+openstack overcloud container image prepare \
+  --push-destination $LOCAL_IP:8787 \
+  --output-env-file $HOME/openshift_docker_images.yaml \
+  --output-images-file $HOME/openshift_containers.yaml \
+  -e $HOME/tripleo-heat-templates/environments/docker.yaml \
+  -e $HOME/tripleo-heat-templates/environments/openshift.yaml \
+  -e $HOME/tripleo-heat-templates/environments/openshift-cns.yaml \
+  -e $HOME/openshift_env.yaml \
+  -e $SCRIPTDIR/$TARGET/openshift-custom.yaml \
+  -r $HOME/openshift_roles_data.yaml
+openstack overcloud container image upload --config-file $HOME/openshift_containers.yaml
