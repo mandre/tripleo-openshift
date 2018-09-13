@@ -57,6 +57,10 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/601277/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/77/601277/1 && git cherry-pick FETCH_HEAD
 
+  # Configure haproxy for openshift infra
+  # https://review.openstack.org/#/c/601241/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/601241/4 && git cherry-pick FETCH_HEAD
+
   popd
 fi
 
@@ -131,11 +135,20 @@ fi
 #   popd
 # fi
 
-# if [ ! -d $HOME/puppet/tripleo ]; then
-#   # We need a recent puppet-tripleo for https://review.openstack.org/#/c/579128/
-#   git clone git://git.openstack.org/openstack/puppet-tripleo $HOME/puppet/tripleo
-#   upload-puppet-modules -d $HOME/puppet/ -c openshift-artifacts
-# fi
+if [ ! -d $HOME/puppet/tripleo ]; then
+  git clone git://git.openstack.org/openstack/puppet-tripleo $HOME/puppet/tripleo
+
+  # Apply any patches needed
+  pushd $HOME/puppet/tripleo
+
+  # Add haproxy endpoint config for openshift routers
+  # https://review.openstack.org/#/c/602063/
+  git fetch https://git.openstack.org/openstack/puppet-tripleo refs/changes/63/602063/2 && git cherry-pick FETCH_HEAD
+
+  upload-puppet-modules -d $HOME/puppet/ -c openshift-artifacts
+
+  popd
+fi
 
 cat > $HOME/containers-prepare-parameter.yaml <<EOF
 parameter_defaults:
