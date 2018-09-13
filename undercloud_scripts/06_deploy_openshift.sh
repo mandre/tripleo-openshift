@@ -12,7 +12,6 @@ openstack overcloud deploy \
   --stack ${OPENSHIFT_STACK_NAME} \
   -r $HOME/openshift_roles_data.yaml \
   -e $HOME/tripleo-heat-templates/environments/openshift.yaml \
-  -e $HOME/tripleo-heat-templates/environments/openshift-cns.yaml \
   -e $HOME/tripleo-heat-templates/environments/config-download-environment.yaml \
   -e $HOME/tripleo-heat-templates/environments/network-isolation.yaml \
   -e $HOME/tripleo-heat-templates/environments/net-single-nic-with-vlans.yaml \
