@@ -53,10 +53,6 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/600028/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/28/600028/4 && git cherry-pick FETCH_HEAD
 
-  # Hook openshift deployment with image prepare
-  # https://review.openstack.org/#/c/601277/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/77/601277/1 && git cherry-pick FETCH_HEAD
-
   # Configure haproxy for openshift infra
   # https://review.openstack.org/#/c/601241/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/601241/4 && git cherry-pick FETCH_HEAD
