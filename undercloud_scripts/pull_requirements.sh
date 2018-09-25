@@ -37,25 +37,57 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-heat-templates
 
-  # Add pvremove to the disk clean step
-  # https://review.openstack.org/#/c/565182/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/82/565182/4 && git cherry-pick FETCH_HEAD
+  # Add simple validation that OpenShift is deployed
+  # https://review.openstack.org/#/c/600067/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/67/600067/17 && git cherry-pick FETCH_HEAD
 
   # Refactor openshift services for composable roles
   # https://review.openstack.org/#/c/599618/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/18/599618/4 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/18/599618/14 && git cherry-pick FETCH_HEAD
 
   # Fix openshift new node detection
   # https://review.openstack.org/#/c/600012/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/12/600012/3 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/12/600012/13 && git cherry-pick FETCH_HEAD
 
   # Clean up previous osa inventory dir before deployment
   # https://review.openstack.org/#/c/600028/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/28/600028/4 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/28/600028/14 && git cherry-pick FETCH_HEAD
 
   # Configure haproxy for openshift infra
   # https://review.openstack.org/#/c/601241/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/601241/4 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/601241/16 && git cherry-pick FETCH_HEAD
+
+  # Fix inventory files for newer openshift-ansible
+  # https://review.openstack.org/#/c/603577/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/77/603577/5 && git cherry-pick FETCH_HEAD
+
+  # Introduce OpenShiftGlusterNodeVars heat param
+  # https://review.openstack.org/#/c/604724/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/24/604724/2 && git cherry-pick FETCH_HEAD
+
+  # Make glusterfs the default sc when deploying with CNS
+  # https://review.openstack.org/#/c/604725/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/25/604725/2 && git cherry-pick FETCH_HEAD
+
+  # Consolidate openshift-ansible global variables
+  # https://review.openstack.org/#/c/604726/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/26/604726/2 && git cherry-pick FETCH_HEAD
+
+  # Add heat param for openshift prerequisites playbook
+  # https://review.openstack.org/#/c/604338/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/38/604338/3 && git cherry-pick FETCH_HEAD
+
+  # Do not wipe disks on OpenShift gluster nodes
+  # https://review.openstack.org/#/c/605127/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/27/605127/1 && git cherry-pick FETCH_HEAD
+
+  # Remove unused networks from OpenShift roles
+  # https://review.openstack.org/#/c/604727/
+  # git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/27/604727/2 && git cherry-pick FETCH_HEAD
+
+  # Use openshift-ansible container instead of RPMs
+  # https://review.openstack.org/#/c/583868/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/68/583868/17 && git cherry-pick FETCH_HEAD
 
   popd
 fi
@@ -72,7 +104,15 @@ if [ ! -d $HOME/tripleo-common ]; then
 
   # Switch to origin-docker-build
   # https://review.openstack.org/#/c/599307/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/07/599307/1 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/07/599307/3 && git cherry-pick FETCH_HEAD
+
+  # Add container-registry image to openshift master role
+  # https://review.openstack.org/#/c/602112/
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/12/602112/3 && git cherry-pick FETCH_HEAD
+
+  # Tag openshift images for Infra service
+  # https://review.openstack.org/#/c/603050/
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/50/603050/3 && git cherry-pick FETCH_HEAD
 
   sudo rm -Rf /usr/lib/python2.7/site-packages/tripleo_common*
   sudo python setup.py install
@@ -139,7 +179,11 @@ if [ ! -d $HOME/puppet/tripleo ]; then
 
   # Add haproxy endpoint config for openshift routers
   # https://review.openstack.org/#/c/602063/
-  git fetch https://git.openstack.org/openstack/puppet-tripleo refs/changes/63/602063/2 && git cherry-pick FETCH_HEAD
+  # git fetch https://git.openstack.org/openstack/puppet-tripleo refs/changes/63/602063/2 && git cherry-pick FETCH_HEAD
+
+  # Introduce alternative to get ip_addresses and server_names
+  # https://review.openstack.org/#/c/603291/
+  git fetch https://git.openstack.org/openstack/puppet-tripleo refs/changes/91/603291/4 && git cherry-pick FETCH_HEAD
 
   upload-puppet-modules -d $HOME/puppet/ -c openshift-artifacts
 
