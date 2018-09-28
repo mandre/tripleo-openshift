@@ -13,7 +13,7 @@ LOCAL_INTERFACE=eth1
 NAMESERVERS="192.168.23.1"
 
 declare -A NODES=(
-[openshift-dev-master-0]=openshift_master2
+[openshift-dev-master-0]=openshift_infra
 [openshift-dev-worker-0]=openshift_infra
 [openshift-dev-worker-1]=openshift_infra
 [openshift-master-0]=openshift_master
