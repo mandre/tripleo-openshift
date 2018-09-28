@@ -17,8 +17,7 @@ sudo yum -y install nodejs
 
 # NOTE(mandre) use centos-release-openshift-origin instead?
 sudo yum -y install centos-release-openshift-origin310
-# FIXME pin to 3.10.41 since version 3.10.43 breaks deployment
-sudo yum -y install openshift-ansible-playbooks-3.10.41
+sudo yum -y install openshift-ansible-playbooks
 
 # NOTE (alitke): Needed for openshift-metrics install
 #sudo yum -y install java-1.8.0-openjdk-headless
