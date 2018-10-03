@@ -36,10 +36,6 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-heat-templates
 
-  # Clean up previous osa inventory dir before deployment
-  # https://review.openstack.org/#/c/600028/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/28/600028/14 && git cherry-pick FETCH_HEAD
-
   # Configure haproxy for openshift infra
   # https://review.openstack.org/#/c/601241/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/601241/16 && git cherry-pick FETCH_HEAD
@@ -71,6 +67,10 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Remove unused networks from OpenShift roles
   # https://review.openstack.org/#/c/604727/
   # git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/27/604727/3 && git cherry-pick FETCH_HEAD
+
+  # Deploy openshift all in one in scenario009
+  # https://review.openstack.org/#/c/603780/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/80/603780/4 && git cherry-pick FETCH_HEAD
 
   # Use openshift-ansible container instead of RPMs
   # https://review.openstack.org/#/c/583868/
