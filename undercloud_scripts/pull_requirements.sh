@@ -36,49 +36,41 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-heat-templates
 
-  # Add heat param for openshift prerequisites playbook
-  # https://review.openstack.org/#/c/604338/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/38/604338/6 && git cherry-pick FETCH_HEAD
-
   # Do not wipe disks on OpenShift gluster nodes
   # https://review.openstack.org/#/c/605127/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/27/605127/4 && git cherry-pick FETCH_HEAD
+  # git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/27/605127/4 && git cherry-pick FETCH_HEAD
 
   # Remove unused networks from OpenShift roles
   # https://review.openstack.org/#/c/604727/
-  # git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/27/604727/6 && git cherry-pick FETCH_HEAD
-
-  # Deploy openshift all in one in scenario009
-  # https://review.openstack.org/#/c/603780/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/80/603780/10 && git cherry-pick FETCH_HEAD
-
-  # Use glusterfs for registry when deploying with CNS
-  # https://review.openstack.org/#/c/605825/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/25/605825/8 && git cherry-pick FETCH_HEAD
-
-  # Use openshift-ansible container instead of RPMs
-  # https://review.openstack.org/#/c/583868/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/68/583868/24 && git cherry-pick FETCH_HEAD
-
-  # Fix update tasks for openshift
-  # https://review.openstack.org/#/c/608658/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/58/608658/3 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/27/604727/6 && git cherry-pick FETCH_HEAD
 
   # Use different base virtual_router_id on openshift
   # https://review.openstack.org/#/c/608719/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/19/608719/2 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/19/608719/3 && git cherry-pick FETCH_HEAD
 
   # Add OS::TripleO::Services::Rhsm to OpenShift roles
   # https://review.openstack.org/#/c/605999/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/99/605999/4 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/99/605999/6 && git cherry-pick FETCH_HEAD
 
   # Use Timesync service instead of Ntp
   # https://review.openstack.org/#/c/606000/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/00/606000/4 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/00/606000/6 && git cherry-pick FETCH_HEAD
 
   # Let openshift-ansible configure the firewall
   # https://review.openstack.org/#/c/606001/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/01/606001/4 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/01/606001/6 && git cherry-pick FETCH_HEAD
+
+  # Do not modify imagestreams
+  # https://review.openstack.org/#/c/609445/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/45/609445/5 && git cherry-pick FETCH_HEAD
+
+  # Set openshift_docker_insecure_registries
+  # https://review.openstack.org/#/c/609603/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/03/609603/3 && git cherry-pick FETCH_HEAD
+
+  # Parametrize OpenShift deployment type
+  # https://review.openstack.org/#/c/611306/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/06/611306/1 && git cherry-pick FETCH_HEAD
 
   popd
 fi
