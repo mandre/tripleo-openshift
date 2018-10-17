@@ -13,8 +13,8 @@ openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/rol
 if [ ! -d $HOME/mistral_executor_patch ]; then
   if [ ! -d $HOME/tripleo-common ]; then
     git clone https://github.com/openstack/tripleo-common.git
-    git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/99/605399/5 && git cherry-pick FETCH_HEAD
   fi
+  mkdir -p $HOME/mistral_executor_patch
   cp $HOME/tripleo-common/sudoers $HOME/mistral_executor_patch/
   cp $HOME/tripleo-common/scripts/tripleo-deploy-openshift $HOME/mistral_executor_patch/
   cat > $HOME/mistral_executor_patch/Dockerfile << EOF
@@ -25,9 +25,10 @@ COPY sudoers /etc/sudoers.d/tripleo-common
 COPY tripleo-deploy-openshift /usr/bin/tripleo-deploy-openshift
 USER mistral
 EOF
+  docker build $HOME/mistral_executor_patch -t 192.168.24.1:8787/tripleomaster/centos-binary-mistral-executor:tripleo-openshift
   sudo sed -i 's/mistral-executor:current-tripleo/mistral-executor:tripleo-openshift/' /var/lib/tripleo-config/docker-container-startup-config-step_4.json
-  sudo docker stop mistral_executor
-  sudo docker rm mistral_executor
+  docker stop mistral_executor
+  docker rm mistral_executor
   sudo paunch --debug apply --file /var/lib/tripleo-config/docker-container-startup-config-step_4.json --config-id tripleo_step4 --managed-by tripleo-Undercloud
 fi
 
