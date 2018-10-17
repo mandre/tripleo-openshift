@@ -32,6 +32,30 @@ EOF
   sudo paunch --debug apply --file /var/lib/tripleo-config/docker-container-startup-config-step_4.json --config-id tripleo_step4 --managed-by tripleo-Undercloud
 fi
 
+cat > $HOME/network_data.yaml << EOF
+- name: Storage
+  vip: true
+  vlan: 30
+  name_lower: storage
+  ip_subnet: '172.17.3.0/24'
+  allocation_pools: [{'start': '172.17.3.10', 'end': '172.17.3.149'}]
+
+- name: InternalApi
+  name_lower: internal_api
+  vip: true
+  vlan: 20
+  ip_subnet: '172.17.1.0/24'
+  allocation_pools: [{'start': '172.17.1.10', 'end': '172.17.1.149'}]
+
+- name: External
+  vip: true
+  name_lower: external
+  vlan: 10
+  ip_subnet: '10.0.0.0/24'
+  allocation_pools: [{'start': '10.0.0.101', 'end': '10.0.0.149'}]
+  gateway_ip: '10.0.0.1'
+EOF
+
 # Create the openshift config
 # We use the oooq_* flavors to ensure the correct Ironic nodes are used
 # But this currently doesn't enforce predictable placement (which is fine
