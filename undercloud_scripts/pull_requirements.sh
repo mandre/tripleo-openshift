@@ -36,41 +36,21 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-heat-templates
 
-  # Do not wipe disks on OpenShift gluster nodes
-  # https://review.openstack.org/#/c/605127/
-  # git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/27/605127/4 && git cherry-pick FETCH_HEAD
-
   # Remove unused networks from OpenShift roles
   # https://review.openstack.org/#/c/604727/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/27/604727/6 && git cherry-pick FETCH_HEAD
 
-  # Use different base virtual_router_id on openshift
-  # https://review.openstack.org/#/c/608719/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/19/608719/3 && git cherry-pick FETCH_HEAD
-
-  # Add OS::TripleO::Services::Rhsm to OpenShift roles
-  # https://review.openstack.org/#/c/605999/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/99/605999/6 && git cherry-pick FETCH_HEAD
-
-  # Use Timesync service instead of Ntp
-  # https://review.openstack.org/#/c/606000/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/00/606000/6 && git cherry-pick FETCH_HEAD
-
-  # Let openshift-ansible configure the firewall
-  # https://review.openstack.org/#/c/606001/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/01/606001/6 && git cherry-pick FETCH_HEAD
-
-  # Do not modify imagestreams
-  # https://review.openstack.org/#/c/609445/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/45/609445/5 && git cherry-pick FETCH_HEAD
-
-  # Set openshift_docker_insecure_registries
-  # https://review.openstack.org/#/c/609603/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/03/609603/3 && git cherry-pick FETCH_HEAD
-
   # Parametrize OpenShift deployment type
   # https://review.openstack.org/#/c/611306/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/06/611306/1 && git cherry-pick FETCH_HEAD
+
+  # Make openshift-master service idempotent
+  # https://review.openstack.org/#/c/605796/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/96/605796/1 && git cherry-pick FETCH_HEAD
+
+  # Update to OpenShift 3.11 release
+  # https://review.openstack.org/#/c/610682/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/82/610682/2 && git cherry-pick FETCH_HEAD
 
   popd
 fi
@@ -81,13 +61,9 @@ if [ ! -d $HOME/tripleo-common ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-common
 
-  # Add openshift-ansible container image
-  # https://review.openstack.org/#/c/608307/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/07/608307/1 && git cherry-pick FETCH_HEAD
-
-  # Add wrapper for openshift-ansible docker command
-  # https://review.openstack.org/#/c/605399/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/99/605399/5 && git cherry-pick FETCH_HEAD
+  # Add container images for openshift 3.11
+  # https://review.openstack.org/#/c/610663/
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/63/610663/3 && git cherry-pick FETCH_HEAD
 
   sudo rm -Rf /usr/lib/python2.7/site-packages/tripleo_common*
   sudo python setup.py install

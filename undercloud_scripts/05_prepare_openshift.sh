@@ -87,8 +87,7 @@ parameter_defaults:
       challenge: true
       kind: AllowAllPasswordIdentityProvider
 
-    # NOTE(flaper87): Needed for the gate
-    openshift_disable_check: package_availability,package_version,disk_availability,docker_storage,memory_availability,docker_image_availability
+    openshift_disable_check: memory_availability
 EOF
 
 openstack overcloud container image prepare \
