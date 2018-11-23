@@ -9,29 +9,6 @@ set -x
 # openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/roles -o $HOME/openshift_roles_data.yaml OpenShiftAllInOne
 openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/roles -o $HOME/openshift_roles_data.yaml OpenShiftMaster OpenShiftWorker OpenShiftInfra
 
-# Patch mistral_executor image
-if [ ! -d $HOME/mistral_executor_patch ]; then
-  if [ ! -d $HOME/tripleo-common ]; then
-    git clone https://github.com/openstack/tripleo-common.git
-  fi
-  mkdir -p $HOME/mistral_executor_patch
-  cp $HOME/tripleo-common/sudoers $HOME/mistral_executor_patch/
-  cp $HOME/tripleo-common/scripts/tripleo-deploy-openshift $HOME/mistral_executor_patch/
-  cat > $HOME/mistral_executor_patch/Dockerfile << EOF
-FROM 192.168.24.1:8787/tripleomaster/centos-binary-mistral-executor:current-tripleo
-
-USER root
-COPY sudoers /etc/sudoers.d/tripleo-common
-COPY tripleo-deploy-openshift /usr/bin/tripleo-deploy-openshift
-USER mistral
-EOF
-  docker build $HOME/mistral_executor_patch -t 192.168.24.1:8787/tripleomaster/centos-binary-mistral-executor:tripleo-openshift
-  sudo sed -i 's/mistral-executor:current-tripleo/mistral-executor:tripleo-openshift/' /var/lib/tripleo-config/docker-container-startup-config-step_4.json
-  docker stop mistral_executor
-  docker rm mistral_executor
-  sudo paunch --debug apply --file /var/lib/tripleo-config/docker-container-startup-config-step_4.json --config-id tripleo_step4 --managed-by tripleo-Undercloud
-fi
-
 # Create the openshift config
 # We use the oooq_* flavors to ensure the correct Ironic nodes are used
 # But this currently doesn't enforce predictable placement (which is fine
