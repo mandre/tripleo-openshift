@@ -36,33 +36,21 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-heat-templates
 
-  # Add network data for use with openshift deployments
-  # https://review.openstack.org/#/c/613864/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/64/613864/2 && git cherry-pick FETCH_HEAD
-
-  # Remove unused networks from OpenShift roles
-  # https://review.openstack.org/#/c/604727/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/27/604727/8 && git cherry-pick FETCH_HEAD
-
-  # Fix new node detection
-  # https://review.openstack.org/#/c/613637/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/37/613637/1 && git cherry-pick FETCH_HEAD
-
-  # Do not include node scale up playbook in case of new masters
-  # https://review.openstack.org/#/c/613641/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/613641/1 && git cherry-pick FETCH_HEAD
-
   # Make openshift-master service idempotent
   # https://review.openstack.org/#/c/605796/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/96/605796/1 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/96/605796/2 && git cherry-pick FETCH_HEAD
 
-  # Update to OpenShift 3.11 release
-  # https://review.openstack.org/#/c/610682/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/82/610682/2 && git cherry-pick FETCH_HEAD
+  # Add hosts to expected ansible groups
+  # https://review.openstack.org/#/c/617659/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/59/617659/1 && git cherry-pick FETCH_HEAD
+
+  # Call etcd scaleup playbook when adding master nodes
+  # https://review.openstack.org/#/c/616584/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/84/616584/3 && git cherry-pick FETCH_HEAD
 
   # Set container images for openshift 3.11
   # https://review.openstack.org/#/c/613165/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/65/613165/5 && git cherry-pick FETCH_HEAD
+  # git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/65/613165/7 && git cherry-pick FETCH_HEAD
 
   popd
 fi
@@ -72,10 +60,6 @@ if [ ! -d $HOME/tripleo-common ]; then
 
   # Apply any patches needed
   pushd $HOME/tripleo-common
-
-  # Add container images for openshift 3.11
-  # https://review.openstack.org/#/c/610663/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/63/610663/5 && git cherry-pick FETCH_HEAD
 
   sudo rm -Rf /usr/lib/python2.7/site-packages/tripleo_common*
   sudo python setup.py install
