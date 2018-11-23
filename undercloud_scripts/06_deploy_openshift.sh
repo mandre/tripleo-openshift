@@ -11,7 +11,7 @@ openstack overcloud deploy \
   --disable-validations \
   --stack ${OPENSHIFT_STACK_NAME} \
   -r $HOME/openshift_roles_data.yaml \
-  -n $HOME/network_data.yaml \
+  -n $HOME/tripleo-heat-templates/network_data_openshift.yaml \
   -e $HOME/tripleo-heat-templates/environments/openshift.yaml \
   -e $HOME/tripleo-heat-templates/environments/openshift-cns.yaml \
   -e $HOME/tripleo-heat-templates/environments/network-isolation.yaml \
