@@ -33,10 +33,6 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-heat-templates
 
-  # Make openshift-master service idempotent
-  # https://review.openstack.org/#/c/605796/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/96/605796/2 && git cherry-pick FETCH_HEAD
-
   # Add hosts to expected ansible groups
   # https://review.openstack.org/#/c/617659/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/59/617659/1 && git cherry-pick FETCH_HEAD
@@ -45,9 +41,17 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/616584/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/84/616584/3 && git cherry-pick FETCH_HEAD
 
+  # Configure registry to use gluster
+  # https://review.openstack.org/#/c/618955/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/55/618955/2 && git cherry-pick FETCH_HEAD
+
+  # Rework the generated openshift-ansible playbook
+  # https://review.openstack.org/#/c/619713/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/13/619713/2 && git cherry-pick FETCH_HEAD
+
   # Set container images for openshift 3.11
   # https://review.openstack.org/#/c/613165/
-  # git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/65/613165/7 && git cherry-pick FETCH_HEAD
+  # git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/65/613165/9 && git cherry-pick FETCH_HEAD
 
   popd
 fi
