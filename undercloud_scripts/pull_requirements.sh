@@ -12,15 +12,12 @@ sudo yum -y install \
   vim
 
 # This is needed to run a local checkout of the Tripleo-UI
-curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
-sudo yum -y install nodejs
+# curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
+# sudo yum -y install nodejs
 
 # NOTE(mandre) use centos-release-openshift-origin instead?
-sudo yum -y install centos-release-openshift-origin310
-sudo yum -y install openshift-ansible-playbooks
-
-# NOTE (alitke): Needed for openshift-metrics install
-#sudo yum -y install java-1.8.0-openjdk-headless
+#sudo yum -y install centos-release-openshift-origin311
+#sudo yum -y install openshift-ansible-playbooks
 
 set -eu
 
