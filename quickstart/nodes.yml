@@ -55,11 +55,13 @@ flavors:
     memory: '{{compute_memory|default(default_memory)}}'
     disk: '{{compute_disk|default(default_disk)}}'
     vcpu: '{{compute_vcpu|default(default_vcpu)}}'
+    extradisks: true
 
   control:
     memory: '{{control_memory|default(default_memory)}}'
     disk: '{{control_disk|default(default_disk)}}'
     vcpu: '{{control_vcpu|default(default_vcpu)}}'
+    extradisks: true
 
   openshift_master:
     memory: '{{openshift_memory|default(default_memory)}}'

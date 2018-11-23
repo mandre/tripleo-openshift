@@ -19,6 +19,6 @@ declare -A NODES=(
 [openshift-master-0]=openshift_master
 [openshift-worker-0]=openshift_worker
 [openshift-worker-1]=openshift_worker
-[openstack-compute-0]=compute
-[openstack-controller-0]=control
+[openstack-compute-0]=openshift_worker
+[openstack-controller-0]=openshift_master
 )
