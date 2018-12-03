@@ -69,6 +69,10 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/621261/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/61/621261/2 && git cherry-pick FETCH_HEAD
 
+  # Rely on osa defaults for enabled services
+  # https://review.openstack.org/#/c/621534/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/34/621534/1 && git cherry-pick FETCH_HEAD
+
   popd
 fi
 
@@ -77,6 +81,10 @@ if [ ! -d $HOME/tripleo-common ]; then
 
   # Apply any patches needed
   pushd $HOME/tripleo-common
+
+  # Additional images for openshift services
+  # https://review.openstack.org/#/c/621526/
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/26/621526/1 && git cherry-pick FETCH_HEAD
 
   sudo rm -Rf /usr/lib/python2.7/site-packages/tripleo_common*
   sudo python setup.py install
