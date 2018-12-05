@@ -55,23 +55,23 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
 
   # Set container images for openshift 3.11
   # https://review.openstack.org/#/c/613165/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/65/613165/13 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/65/613165/14 && git cherry-pick FETCH_HEAD
 
   # Allow to skip docker reconfiguration during stack update
   # https://review.openstack.org/#/c/620621/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/21/620621/10 && git cherry-pick FETCH_HEAD
-
-  # Use InternalApi network for openshift_master_cluster_hostname
-  # https://review.openstack.org/#/c/621256/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/56/621256/1 && git cherry-pick FETCH_HEAD
-
-  # Set balance to source for openshift_router endpoints
-  # https://review.openstack.org/#/c/621261/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/61/621261/2 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/21/620621/11 && git cherry-pick FETCH_HEAD
 
   # Rely on osa defaults for enabled services
   # https://review.openstack.org/#/c/621534/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/34/621534/1 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/34/621534/3 && git cherry-pick FETCH_HEAD
+
+  # Remove openshift-ansible customization
+  # https://review.openstack.org/#/c/622440/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/40/622440/1 && git cherry-pick FETCH_HEAD
+
+  # Allow customization of more openshift-ansible vars
+  # https://review.openstack.org/#/c/622455/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/55/622455/1 && git cherry-pick FETCH_HEAD
 
   popd
 fi
@@ -84,7 +84,7 @@ if [ ! -d $HOME/tripleo-common ]; then
 
   # Additional images for openshift services
   # https://review.openstack.org/#/c/621526/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/26/621526/1 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/26/621526/3 && git cherry-pick FETCH_HEAD
 
   sudo rm -Rf /usr/lib/python2.7/site-packages/tripleo_common*
   sudo python setup.py install
@@ -135,7 +135,7 @@ if [ ! -d $HOME/ansible-role-container-registry ]; then
 
   # Allow to skip docker reconfiguration
   # https://review.openstack.org/#/c/621241/
-  git fetch https://git.openstack.org/openstack/ansible-role-container-registry refs/changes/41/621241/1 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/ansible-role-container-registry refs/changes/41/621241/3 && git cherry-pick FETCH_HEAD
 
   sudo rm -Rf /usr/share/ansible/roles/container-registry
   sudo python setup.py install
@@ -161,20 +161,16 @@ fi
 #   popd
 # fi
 
-if [ ! -d $HOME/puppet/tripleo ]; then
-  git clone git://git.openstack.org/openstack/puppet-tripleo $HOME/puppet/tripleo
+# if [ ! -d $HOME/puppet/tripleo ]; then
+#   git clone git://git.openstack.org/openstack/puppet-tripleo $HOME/puppet/tripleo
 
-  # Apply any patches needed
-  pushd $HOME/puppet/tripleo
+#   # Apply any patches needed
+#   pushd $HOME/puppet/tripleo
 
-  # Set balance to source for openshift_master endpoints
-  # https://review.openstack.org/#/c/621260/
-  git fetch https://git.openstack.org/openstack/puppet-tripleo refs/changes/60/621260/1 && git cherry-pick FETCH_HEAD
+#   upload-puppet-modules -d $HOME/puppet/ -c openshift-artifacts
 
-  upload-puppet-modules -d $HOME/puppet/ -c openshift-artifacts
-
-  popd
-fi
+#   popd
+# fi
 
 cat > $HOME/containers-prepare-parameter.yaml <<EOF
 parameter_defaults:
