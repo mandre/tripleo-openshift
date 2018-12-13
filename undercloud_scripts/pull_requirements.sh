@@ -49,17 +49,13 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/624011/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/11/624011/1 && git cherry-pick FETCH_HEAD
 
-  # Let openshift-ansible manage openvswitch
-  # https://review.openstack.org/#/c/624021/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/21/624021/2 && git cherry-pick FETCH_HEAD
-
   # Fix address for glusterfs container images
   # https://review.openstack.org/#/c/620557/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/57/620557/1 && git cherry-pick FETCH_HEAD
 
-  # Set container images for openshift 3.11
-  # https://review.openstack.org/#/c/613165/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/65/613165/14 && git cherry-pick FETCH_HEAD
+  # Allow customization of more openshift-ansible vars
+  # https://review.openstack.org/#/c/622455/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/55/622455/1 && git cherry-pick FETCH_HEAD
 
   # Rely on osa defaults for enabled services
   # https://review.openstack.org/#/c/621534/
@@ -69,9 +65,13 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/622440/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/40/622440/1 && git cherry-pick FETCH_HEAD
 
-  # Allow customization of more openshift-ansible vars
-  # https://review.openstack.org/#/c/622455/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/55/622455/1 && git cherry-pick FETCH_HEAD
+  # Set container images for openshift 3.11
+  # https://review.openstack.org/#/c/613165/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/65/613165/15 && git cherry-pick FETCH_HEAD
+
+  # Let openshift-ansible manage openvswitch
+  # https://review.openstack.org/#/c/624021/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/21/624021/3 && git cherry-pick FETCH_HEAD
 
   # Fix access to /var/lib/haproxy when SELinux is enabled
   # https://review.openstack.org/#/c/624373/
