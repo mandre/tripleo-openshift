@@ -33,10 +33,6 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-heat-templates
 
-  # Add hosts to expected ansible groups
-  # https://review.openstack.org/#/c/617659/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/59/617659/1 && git cherry-pick FETCH_HEAD
-
   # Call etcd scaleup playbook when adding master nodes
   # https://review.openstack.org/#/c/616584/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/84/616584/3 && git cherry-pick FETCH_HEAD
@@ -47,7 +43,15 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
 
   # Rework the generated openshift-ansible playbook
   # https://review.openstack.org/#/c/619713/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/13/619713/2 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/13/619713/5 && git cherry-pick FETCH_HEAD
+
+  # Restart openshift master services after stack update
+  # https://review.openstack.org/#/c/624011/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/11/624011/1 && git cherry-pick FETCH_HEAD
+
+  # Let openshift-ansible manage openvswitch
+  # https://review.openstack.org/#/c/624021/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/21/624021/2 && git cherry-pick FETCH_HEAD
 
   # Fix address for glusterfs container images
   # https://review.openstack.org/#/c/620557/
@@ -56,10 +60,6 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Set container images for openshift 3.11
   # https://review.openstack.org/#/c/613165/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/65/613165/14 && git cherry-pick FETCH_HEAD
-
-  # Allow to skip docker reconfiguration during stack update
-  # https://review.openstack.org/#/c/620621/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/21/620621/11 && git cherry-pick FETCH_HEAD
 
   # Rely on osa defaults for enabled services
   # https://review.openstack.org/#/c/621534/
@@ -72,6 +72,10 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Allow customization of more openshift-ansible vars
   # https://review.openstack.org/#/c/622455/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/55/622455/1 && git cherry-pick FETCH_HEAD
+
+  # Fix access to /var/lib/haproxy when SELinux is enabled
+  # https://review.openstack.org/#/c/624373/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/73/624373/3 && git cherry-pick FETCH_HEAD
 
   popd
 fi
@@ -132,10 +136,6 @@ if [ ! -d $HOME/ansible-role-container-registry ]; then
 
   # Apply any patches needed
   pushd $HOME/ansible-role-container-registry
-
-  # Allow to skip docker reconfiguration
-  # https://review.openstack.org/#/c/621241/
-  git fetch https://git.openstack.org/openstack/ansible-role-container-registry refs/changes/41/621241/3 && git cherry-pick FETCH_HEAD
 
   sudo rm -Rf /usr/share/ansible/roles/container-registry
   sudo python setup.py install
