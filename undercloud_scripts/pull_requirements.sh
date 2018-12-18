@@ -33,14 +33,6 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-heat-templates
 
-  # Call etcd scaleup playbook when adding master nodes
-  # https://review.openstack.org/#/c/616584/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/84/616584/3 && git cherry-pick FETCH_HEAD
-
-  # Configure registry to use gluster
-  # https://review.openstack.org/#/c/618955/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/55/618955/2 && git cherry-pick FETCH_HEAD
-
   # Rework the generated openshift-ansible playbook
   # https://review.openstack.org/#/c/619713/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/13/619713/5 && git cherry-pick FETCH_HEAD
