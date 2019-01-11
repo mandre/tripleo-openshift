@@ -33,14 +33,6 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-heat-templates
 
-  # Rework the generated openshift-ansible playbook
-  # https://review.openstack.org/#/c/619713/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/13/619713/7 && git cherry-pick FETCH_HEAD
-
-  # Restart openshift master services after stack update
-  # https://review.openstack.org/#/c/624011/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/11/624011/3 && git cherry-pick FETCH_HEAD
-
   # Fix address for glusterfs container images
   # https://review.openstack.org/#/c/620557/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/57/620557/3 && git cherry-pick FETCH_HEAD
@@ -56,6 +48,10 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Set container images for openshift 3.11
   # https://review.openstack.org/#/c/613165/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/65/613165/15 && git cherry-pick FETCH_HEAD
+
+  # Fix deployment of gluster with openshift AllInOne
+  # https://review.openstack.org/#/c/630045/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/45/630045/2 && git cherry-pick FETCH_HEAD
 
   # Let openshift-ansible manage openvswitch
   # https://review.openstack.org/#/c/624021/
