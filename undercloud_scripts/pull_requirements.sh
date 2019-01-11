@@ -35,19 +35,15 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
 
   # Rework the generated openshift-ansible playbook
   # https://review.openstack.org/#/c/619713/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/13/619713/5 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/13/619713/7 && git cherry-pick FETCH_HEAD
 
   # Restart openshift master services after stack update
   # https://review.openstack.org/#/c/624011/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/11/624011/1 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/11/624011/3 && git cherry-pick FETCH_HEAD
 
   # Fix address for glusterfs container images
   # https://review.openstack.org/#/c/620557/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/57/620557/1 && git cherry-pick FETCH_HEAD
-
-  # Allow customization of more openshift-ansible vars
-  # https://review.openstack.org/#/c/622455/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/55/622455/1 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/57/620557/3 && git cherry-pick FETCH_HEAD
 
   # Rely on osa defaults for enabled services
   # https://review.openstack.org/#/c/621534/
@@ -63,11 +59,7 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
 
   # Let openshift-ansible manage openvswitch
   # https://review.openstack.org/#/c/624021/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/21/624021/3 && git cherry-pick FETCH_HEAD
-
-  # Fix access to /var/lib/haproxy when SELinux is enabled
-  # https://review.openstack.org/#/c/624373/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/73/624373/3 && git cherry-pick FETCH_HEAD
+  #git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/21/624021/3 && git cherry-pick FETCH_HEAD
 
   popd
 fi
@@ -78,9 +70,48 @@ if [ ! -d $HOME/tripleo-common ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-common
 
-  # Additional images for openshift services
-  # https://review.openstack.org/#/c/621526/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/26/621526/3 && git cherry-pick FETCH_HEAD
+  # Get osa container image from tripleo-common defaults
+  # https://review.openstack.org/#/c/628958/
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/58/628958/2 && git cherry-pick FETCH_HEAD
+
+  # Introduce a --plan option to replace --config-download-dir
+  # https://review.openstack.org/#/c/628959/
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/59/628959/4 && git cherry-pick FETCH_HEAD
+
+  # Add ability to run osa playbooks from tripleo-deploy-openshift
+  # https://review.openstack.org/#/c/628960/
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/60/628960/6 && git cherry-pick FETCH_HEAD
+
+  # Pass additional args to tripleo-deploy-openshift as ansible options
+  # https://review.openstack.org/#/c/628961/
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/61/628961/5 && git cherry-pick FETCH_HEAD
+
+  # Option to run osa playbooks from path
+  # https://review.openstack.org/#/c/628962/
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/62/628962/5 && git cherry-pick FETCH_HEAD
+
+  # Switch to podman for tripleo-deploy-openshift
+  # https://review.openstack.org/#/c/628498/
+  # git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/98/628498/5 && git cherry-pick FETCH_HEAD
+
+  # Rebuild mistral-executor image
+  mkdir -p ~/mistral-executor-image
+  cp scripts/tripleo-deploy-openshift $HOME/mistral-executor-image
+  cp container-images/container_image_prepare_defaults.yaml $HOME/mistral-executor-image
+  cp container-images/overcloud_containers.yaml.j2 $HOME/mistral-executor-image
+  cat > $HOME/mistral-executor-image/Dockerfile <<EOF
+FROM 192.168.24.1:8787/tripleomaster/centos-binary-mistral-executor:current-tripleo
+USER root
+COPY tripleo-deploy-openshift /usr/bin/tripleo-deploy-openshift
+COPY container_image_prepare_defaults.yaml /openstack-tripleo-common-containers/container-images/
+COPY overcloud_containers.yaml.j2 /openstack-tripleo-common-containers/container-images/
+USER mistral
+EOF
+  docker build $HOME/mistral-executor-image -t 192.168.24.1:8787/tripleomaster/centos-binary-mistral-executor:tripleo-openshift
+  docker push 192.168.24.1:8787/tripleomaster/centos-binary-mistral-executor:tripleo-openshift
+  sudo sed -i 's/mistral-executor:current-tripleo/mistral-executor:tripleo-openshift/' /var/lib/tripleo-config/docker-container-startup-config-step_4.json
+  sudo podman rm -f mistral_executor
+  sudo paunch --debug apply --default-runtime podman --file /var/lib/tripleo-config/docker-container-startup-config-step_4.json --config-id tripleo_step4 --managed-by tripleo-Undercloud
 
   sudo rm -Rf /usr/lib/python2.7/site-packages/tripleo_common*
   sudo python setup.py install
@@ -123,17 +154,17 @@ if [ ! -d $HOME/python-tripleoclient ]; then
   popd
 fi
 
-if [ ! -d $HOME/ansible-role-container-registry ]; then
-  git clone git://git.openstack.org/openstack/ansible-role-container-registry $HOME/ansible-role-container-registry
+# if [ ! -d $HOME/ansible-role-container-registry ]; then
+#   git clone git://git.openstack.org/openstack/ansible-role-container-registry $HOME/ansible-role-container-registry
 
-  # Apply any patches needed
-  pushd $HOME/ansible-role-container-registry
+#   # Apply any patches needed
+#   pushd $HOME/ansible-role-container-registry
 
-  sudo rm -Rf /usr/share/ansible/roles/container-registry
-  sudo python setup.py install
+#   sudo rm -Rf /usr/share/ansible/roles/container-registry
+#   sudo python setup.py install
 
-  popd
-fi
+#   popd
+# fi
 
 # if [ ! -d $HOME/tripleo-ui ]; then
 #   git clone git://git.openstack.org/openstack/tripleo-ui $HOME/tripleo-ui
