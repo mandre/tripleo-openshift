@@ -51,7 +51,11 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
 
   # Fix deployment of gluster with openshift AllInOne
   # https://review.openstack.org/#/c/630045/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/45/630045/2 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/45/630045/3 && git cherry-pick FETCH_HEAD
+
+  # Remove gluster settings from previous deployments on re-deploy
+  # https://review.openstack.org/#/c/630640/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/40/630640/1 && git cherry-pick FETCH_HEAD
 
   # Let openshift-ansible manage openvswitch
   # https://review.openstack.org/#/c/624021/
