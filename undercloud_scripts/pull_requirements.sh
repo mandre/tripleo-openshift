@@ -33,29 +33,29 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-heat-templates
 
-  # Fix address for glusterfs container images
-  # https://review.openstack.org/#/c/620557/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/57/620557/3 && git cherry-pick FETCH_HEAD
-
-  # Rely on osa defaults for enabled services
-  # https://review.openstack.org/#/c/621534/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/34/621534/3 && git cherry-pick FETCH_HEAD
-
-  # Remove openshift-ansible customization
-  # https://review.openstack.org/#/c/622440/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/40/622440/1 && git cherry-pick FETCH_HEAD
-
-  # Set container images for openshift 3.11
-  # https://review.openstack.org/#/c/613165/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/65/613165/15 && git cherry-pick FETCH_HEAD
-
   # Fix deployment of gluster with openshift AllInOne
   # https://review.openstack.org/#/c/630045/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/45/630045/3 && git cherry-pick FETCH_HEAD
 
-  # Remove gluster settings from previous deployments on re-deploy
-  # https://review.openstack.org/#/c/630640/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/40/630640/1 && git cherry-pick FETCH_HEAD
+  # Fix openshift playbook import
+  # https://review.openstack.org/#/c/632694/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/94/632694/1 && git cherry-pick FETCH_HEAD
+
+  # Store nodes information in a dict
+  # https://review.openstack.org/#/c/632638/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/38/632638/2 && git cherry-pick FETCH_HEAD
+
+  # Generate post-deployment openshift-ansible inventory
+  # https://review.openstack.org/#/c/632639/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/39/632639/2 && git cherry-pick FETCH_HEAD
+
+  # Apply changes to cluster using updated inventory
+  # https://review.openstack.org/#/c/632640/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/40/632640/2 && git cherry-pick FETCH_HEAD
+
+  # Introduce OpenShiftAnsiblePath parameter
+  # https://review.openstack.org/#/c/632641/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/632641/2 && git cherry-pick FETCH_HEAD
 
   # Let openshift-ansible manage openvswitch
   # https://review.openstack.org/#/c/624021/
@@ -194,19 +194,6 @@ fi
 
 #   popd
 # fi
-
-cat > $HOME/containers-prepare-parameter.yaml <<EOF
-parameter_defaults:
-  DockerInsecureRegistryAddress:
-  - $LOCAL_IP:8787
-  ContainerImagePrepare:
-  - push_destination: "$LOCAL_IP:8787"
-    set:
-      tag: "current-tripleo"
-      namespace: "docker.io/tripleomaster"
-      name_prefix: "centos-binary-"
-      name_suffix: ""
-EOF
 
 # Dirty hack to ease ssh to overcloud nodes
 # Now we can just "ssh overcloud-controller-0"
