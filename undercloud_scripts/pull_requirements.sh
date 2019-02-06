@@ -37,25 +37,9 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/630045/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/45/630045/3 && git cherry-pick FETCH_HEAD
 
-  # Fix openshift playbook import
-  # https://review.openstack.org/#/c/632694/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/94/632694/1 && git cherry-pick FETCH_HEAD
-
-  # Store nodes information in a dict
-  # https://review.openstack.org/#/c/632638/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/38/632638/2 && git cherry-pick FETCH_HEAD
-
-  # Generate post-deployment openshift-ansible inventory
-  # https://review.openstack.org/#/c/632639/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/39/632639/2 && git cherry-pick FETCH_HEAD
-
-  # Apply changes to cluster using updated inventory
-  # https://review.openstack.org/#/c/632640/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/40/632640/2 && git cherry-pick FETCH_HEAD
-
   # Introduce OpenShiftAnsiblePath parameter
   # https://review.openstack.org/#/c/632641/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/632641/2 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/632641/3 && git cherry-pick FETCH_HEAD
 
   # Let openshift-ansible manage openvswitch
   # https://review.openstack.org/#/c/624021/
