@@ -31,9 +31,9 @@ parameter_defaults:
   OvercloudOpenShiftInfraFlavor: oooq_openshift_infra
   OvercloudOpenShiftAllInOneFlavor: oooq_openshift_infra
 
-  DnsServers: [$NAMESERVERS]
+  DnsServers: ["192.168.23.1"]
 
-  DockerInsecureRegistryAddress: $LOCAL_IP:8787
+  DockerInsecureRegistryAddress: 192.168.24.1:8787
 
   OpenShiftGlobalVariables:
 
@@ -49,13 +49,12 @@ parameter_defaults:
 EOF
 
 openstack overcloud container image prepare \
-  --push-destination $LOCAL_IP:8787 \
+  --push-destination 192.168.24.1:8787 \
   --output-env-file $HOME/openshift_docker_images.yaml \
   --output-images-file $HOME/openshift_containers.yaml \
   -e $HOME/tripleo-heat-templates/environments/docker.yaml \
   -e $HOME/tripleo-heat-templates/environments/openshift.yaml \
   -e $HOME/tripleo-heat-templates/environments/openshift-cns.yaml \
   -e $HOME/openshift_env.yaml \
-  -e $SCRIPTDIR/$TARGET/openshift-custom.yaml \
   -r $HOME/openshift_roles_data.yaml
 openstack overcloud container image upload --config-file $HOME/openshift_containers.yaml

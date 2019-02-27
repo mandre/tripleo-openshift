@@ -8,13 +8,6 @@ if [ "$USER" != "stack" ]; then
     exit 1
 fi
 
-if [ -z "$TARGET" ]; then
-    echo "SET TARGET!"
-    exit 1
-fi
-source $SCRIPTDIR/$TARGET/variables.sh
-
-OPENSTACK_STACK_NAME=${OPENSTACK_STACK_NAME:-openstack}
 OPENSHIFT_STACK_NAME=${OPENSHIFT_STACK_NAME:-openshift}
 OPENSHIFT_STACK_EXTRA_ARGS=${OPENSHIFT_STACK_EXTRA_ARGS:-}
 

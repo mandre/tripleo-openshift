@@ -79,7 +79,6 @@ $QUICKSTART_CMD
 if [ $? -eq 0 ]; then
   echo "Quickstart run completed, copying scripts"
   scp -r -F $HOME/.quickstart-shiftstack/ssh.config.ansible $QUICKSTART_CONFIG_DIR stack@undercloud:/home/stack/
-  ssh -F $HOME/.quickstart-shiftstack/ssh.config.ansible undercloud "echo 'export TARGET=quickstart' >> .bashrc"
 else
   echo "Error quickstart run failed :("
   exit 1
