@@ -15,7 +15,6 @@ openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/rol
 # until we add more than one of each type of node)
 cat > $HOME/openshift_env.yaml << EOF
 resource_registry:
-  OS::TripleO::NodeUserData: $SCRIPTDIR/$TARGET/bootstrap.yaml
 
 parameter_defaults:
   CloudName: openshift.localdomain
