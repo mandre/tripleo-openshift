@@ -14,12 +14,17 @@ openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/rol
 # But this currently doesn't enforce predictable placement (which is fine
 # until we add more than one of each type of node)
 cat > $HOME/openshift_env.yaml << EOF
-resource_registry:
+# resource_registry:
 
 parameter_defaults:
   CloudName: openshift.localdomain
 
-  # Master and worker counts in $TARGET/openshift-custom.yaml
+  OpenShiftMasterCount: 1
+  OpenShiftWorkerCount: 3
+  OpenShiftInfraCount: 3
+  # OpenShiftAllInOneCount: 1
+  OpenShiftGlusterDisks:
+    - /dev/vdb
 
   OvercloudOpenShiftMasterFlavor: oooq_openshift_master
   OvercloudOpenShiftWorkerFlavor: oooq_openshift_worker

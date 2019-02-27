@@ -18,7 +18,6 @@ openstack overcloud deploy \
   -e $HOME/tripleo-heat-templates/environments/net-single-nic-with-vlans.yaml \
   -e $HOME/openshift_env.yaml \
   -e $HOME/openshift_docker_images.yaml \
-  -e $SCRIPTDIR/$TARGET/openshift-custom.yaml \
   ${OPENSHIFT_STACK_EXTRA_ARGS}
 
 popd
