@@ -66,7 +66,7 @@ QUICKSTART_CMD="$QUICKSTART_DIR/quickstart.sh \
   -w $HOME/.quickstart-shiftstack \
   --teardown all \
   --release master-tripleo-ci \
-  --config $CONFIGDIR/config.yml \
+  --extra-vars @$CONFIGDIR/config.yml \
   --nodes $CONFIGDIR/nodes.yml \
   --no-clone \
   --clean \
