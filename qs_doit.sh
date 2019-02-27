@@ -1,5 +1,7 @@
 #!/bin/bash
 
+QUICKSTART_DIR=$HOME/tripleo-quickstart
+
 usage () {
     echo "Usage: $0 [options] <virthost>"
     echo ""
@@ -37,10 +39,10 @@ if [ "x$TARGET_HOST" = "x" ]; then
   TARGET_HOST=$(hostname)
 fi
 
-if [ ! -d $HOME/tripleo-quickstart ]; then
-  git clone git://git.openstack.org/openstack/tripleo-quickstart $HOME/tripleo-quickstart
+if [ ! -d $QUICKSTART_DIR ]; then
+  git clone git://git.openstack.org/openstack/tripleo-quickstart $QUICKSTART_DIR
 else
-  pushd $HOME/tripleo-quickstart
+  pushd $QUICKSTART_DIR
   git checkout quickstart-extras-requirements.txt
   git checkout master
   git pull
@@ -57,10 +59,10 @@ QUICKSTART_CONFIG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CONFIGDIR="$QUICKSTART_CONFIG_DIR/quickstart"
 
 if [ ! $SKIP_DEPS_CHECK ]; then
-  $HOME/tripleo-quickstart/quickstart.sh --install-deps
+  $QUICKSTART_DIR/quickstart.sh --install-deps
 fi
 
-QUICKSTART_CMD="$HOME/tripleo-quickstart/quickstart.sh \
+QUICKSTART_CMD="$QUICKSTART_DIR/quickstart.sh \
   -w $HOME/.quickstart-shiftstack \
   --teardown all \
   --release master-tripleo-ci \
