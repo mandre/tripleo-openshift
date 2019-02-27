@@ -7,31 +7,6 @@ source $SCRIPTDIR/common.sh
 # needed to make all this work.
 source $SCRIPTDIR/pull_requirements.sh
 
-RESOURCES='--property resources:CUSTOM_BAREMETAL=1 --property resources:DISK_GB=0 --property resources:MEMORY_MB=0 --property resources:VCPU=0 --property capabilities:boot_option=local'
-SIZINGS='--ram 4096 --vcpus 1 --disk 40'
-
-if ! openstack flavor show openshift_worker >/dev/null 2>&1; then
-  openstack flavor create $SIZINGS $RESOURCES --property capabilities:profile=openshift_worker openshift_worker
-fi
-if ! openstack flavor show openshift_master >/dev/null 2>&1; then
-  openstack flavor create $SIZINGS $RESOURCES --property capabilities:profile=openshift_master openshift_master
-fi
-if ! openstack flavor show openshift_infra >/dev/null 2>&1; then
-  openstack flavor create $SIZINGS $RESOURCES --property capabilities:profile=openshift_infra openshift_infra
-fi
-if ! openstack flavor show openshift_worker2 >/dev/null 2>&1; then
-  openstack flavor create $SIZINGS $RESOURCES --property capabilities:profile=openshift_worker2 openshift_worker2
-fi
-if ! openstack flavor show openshift_master2 >/dev/null 2>&1; then
-  openstack flavor create $SIZINGS $RESOURCES --property capabilities:profile=openshift_master2 openshift_master2
-fi
-
-for node_name in "${!NODES[@]}"; do
-  openstack baremetal node set ${node_name} --property capabilities="profile:${NODES[$node_name]},boot_option:local"
-  # Workaround for https://bugzilla.redhat.com/show_bug.cgi?id=1606573
-  openstack baremetal node set ${node_name} --deploy-interface iscsi
-done
-
 # Delete default overcloud plan
 openstack overcloud plan delete overcloud
 

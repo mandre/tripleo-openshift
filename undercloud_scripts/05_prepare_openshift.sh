@@ -22,9 +22,10 @@ parameter_defaults:
 
   # Master and worker counts in $TARGET/openshift-custom.yaml
 
-  OvercloudOpenShiftMasterFlavor: openshift_master
-  OvercloudOpenShiftWorkerFlavor: openshift_worker
-  OvercloudOpenShiftInfraFlavor: openshift_infra
+  OvercloudOpenShiftMasterFlavor: oooq_openshift_master
+  OvercloudOpenShiftWorkerFlavor: oooq_openshift_worker
+  OvercloudOpenShiftInfraFlavor: oooq_openshift_infra
+  OvercloudOpenShiftAllInOneFlavor: oooq_openshift_infra
 
   DnsServers: [$NAMESERVERS]
 
