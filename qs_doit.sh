@@ -37,15 +37,6 @@ if [ "x$TARGET_HOST" = "x" ]; then
   TARGET_HOST=$(hostname)
 fi
 
-if [ ! -d $HOME/tripleo-quickstart-extras ]; then
-  git clone git://git.openstack.org/openstack/tripleo-quickstart-extras $HOME/tripleo-quickstart-extras
-else
-  pushd $HOME/tripleo-quickstart-extras
-  git checkout master
-  git pull
-  popd
-fi
-
 if [ ! -d $HOME/tripleo-quickstart ]; then
   git clone git://git.openstack.org/openstack/tripleo-quickstart $HOME/tripleo-quickstart
 else
@@ -61,9 +52,6 @@ if [ ! -f $HOME/.gitconfig ]; then
   git config --global user.email "theboss@foo.bar"
   git config --global user.name "TheBoss"
 fi
-
-# Use a local clone of t-q-e for easier testing of fixes
-echo "file://$HOME/tripleo-quickstart-extras/" > $HOME/tripleo-quickstart/quickstart-extras-requirements.txt
 
 QUICKSTART_CONFIG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CONFIGDIR="$QUICKSTART_CONFIG_DIR/quickstart"
