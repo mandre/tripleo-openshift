@@ -1,3 +1,0 @@
-parameter_defaults:
-  OpenShiftMasterCount: 1
-  OpenShiftWorkerCount: 2
