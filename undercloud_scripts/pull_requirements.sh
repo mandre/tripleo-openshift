@@ -33,10 +33,6 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-heat-templates
 
-  # Fix deployment of gluster with openshift AllInOne
-  # https://review.openstack.org/#/c/630045/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/45/630045/3 && git cherry-pick FETCH_HEAD
-
   # Introduce OpenShiftAnsiblePath parameter
   # https://review.openstack.org/#/c/632641/
   git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/632641/3 && git cherry-pick FETCH_HEAD
@@ -54,29 +50,25 @@ if [ ! -d $HOME/tripleo-common ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-common
 
-  # Get osa container image from tripleo-common defaults
-  # https://review.openstack.org/#/c/628958/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/58/628958/2 && git cherry-pick FETCH_HEAD
-
   # Introduce a --plan option to replace --config-download-dir
   # https://review.openstack.org/#/c/628959/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/59/628959/4 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/59/628959/5 && git cherry-pick FETCH_HEAD
 
   # Add ability to run osa playbooks from tripleo-deploy-openshift
   # https://review.openstack.org/#/c/628960/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/60/628960/6 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/60/628960/7 && git cherry-pick FETCH_HEAD
 
   # Pass additional args to tripleo-deploy-openshift as ansible options
   # https://review.openstack.org/#/c/628961/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/61/628961/5 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/61/628961/6 && git cherry-pick FETCH_HEAD
 
   # Option to run osa playbooks from path
   # https://review.openstack.org/#/c/628962/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/62/628962/5 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/62/628962/6 && git cherry-pick FETCH_HEAD
 
   # Switch to podman for tripleo-deploy-openshift
   # https://review.openstack.org/#/c/628498/
-  # git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/98/628498/5 && git cherry-pick FETCH_HEAD
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/98/628498/9 && git cherry-pick FETCH_HEAD
 
   # Rebuild mistral-executor image
   mkdir -p ~/mistral-executor-image
@@ -91,11 +83,11 @@ COPY container_image_prepare_defaults.yaml /openstack-tripleo-common-containers/
 COPY overcloud_containers.yaml.j2 /openstack-tripleo-common-containers/container-images/
 USER mistral
 EOF
-  docker build $HOME/mistral-executor-image -t 192.168.24.1:8787/tripleomaster/centos-binary-mistral-executor:tripleo-openshift
-  docker push 192.168.24.1:8787/tripleomaster/centos-binary-mistral-executor:tripleo-openshift
-  sudo sed -i 's/mistral-executor:current-tripleo/mistral-executor:tripleo-openshift/' /var/lib/tripleo-config/docker-container-startup-config-step_4.json
-  sudo podman rm -f mistral_executor
-  sudo paunch --debug apply --default-runtime podman --file /var/lib/tripleo-config/docker-container-startup-config-step_4.json --config-id tripleo_step4 --managed-by tripleo-Undercloud
+  # sudo docker build $HOME/mistral-executor-image -t 192.168.24.1:8787/tripleomaster/centos-binary-mistral-executor:tripleo-openshift
+  # sudo docker push 192.168.24.1:8787/tripleomaster/centos-binary-mistral-executor:tripleo-openshift
+  # sudo sed -i 's/mistral-executor:current-tripleo/mistral-executor:tripleo-openshift/' /var/lib/tripleo-config/docker-container-startup-config-step_4.json
+  # sudo podman rm -f mistral_executor
+  # sudo paunch --debug apply --default-runtime podman --file /var/lib/tripleo-config/docker-container-startup-config-step_4.json --config-id tripleo_step4 --managed-by tripleo-Undercloud
 
   sudo rm -Rf /usr/lib/python2.7/site-packages/tripleo_common*
   sudo python setup.py install
