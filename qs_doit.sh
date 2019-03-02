@@ -69,6 +69,7 @@ QUICKSTART_CMD="$QUICKSTART_CHECKOUT_DIR/quickstart.sh \
   --release master-tripleo-ci \
   --extra-vars @$CONFIGDIR/config.yml \
   --nodes $CONFIGDIR/nodes.yml \
+  --environment $QUICKSTART_WORKING_DIR/config/environments/dev_privileged_libvirt.yml \
   --no-clone \
   --clean \
   ${EXTRA_ARGS} \

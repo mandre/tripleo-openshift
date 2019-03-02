@@ -1,2 +1,5 @@
 undercloud_enable_tempest: false
 run_tempest: false
+step_introspect: false
+undercloud_clean_nodes: false
+undercloud_enable_routed_networks: false

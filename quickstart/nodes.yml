@@ -41,6 +41,8 @@ overcloud_nodes:
 
 node_count: 8
 
+extradisks_list:
+  - vdb
 extradisks_size: '{{openshift_disk|default(default_disk)}}G'
 
 flavors:
