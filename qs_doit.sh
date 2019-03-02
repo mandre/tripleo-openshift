@@ -1,6 +1,7 @@
 #!/bin/bash
 
-QUICKSTART_DIR=$HOME/tripleo-quickstart
+QUICKSTART_CHECKOUT_DIR=$HOME/tripleo-quickstart
+QUICKSTART_WORKING_DIR=$HOME/.quickstart-shiftstack
 
 usage () {
     echo "Usage: $0 [options] <virthost>"
@@ -39,10 +40,10 @@ if [ "x$TARGET_HOST" = "x" ]; then
   TARGET_HOST=$(hostname)
 fi
 
-if [ ! -d $QUICKSTART_DIR ]; then
-  git clone git://git.openstack.org/openstack/tripleo-quickstart $QUICKSTART_DIR
+if [ ! -d $QUICKSTART_CHECKOUT_DIR ]; then
+  git clone git://git.openstack.org/openstack/tripleo-quickstart $QUICKSTART_CHECKOUT_DIR
 else
-  pushd $QUICKSTART_DIR
+  pushd $QUICKSTART_CHECKOUT_DIR
   git checkout quickstart-extras-requirements.txt
   git checkout master
   git pull
@@ -59,11 +60,11 @@ QUICKSTART_CONFIG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CONFIGDIR="$QUICKSTART_CONFIG_DIR/quickstart"
 
 if [ ! $SKIP_DEPS_CHECK ]; then
-  $QUICKSTART_DIR/quickstart.sh --install-deps
+  $QUICKSTART_CHECKOUT_DIR/quickstart.sh --install-deps
 fi
 
-QUICKSTART_CMD="$QUICKSTART_DIR/quickstart.sh \
-  -w $HOME/.quickstart-shiftstack \
+QUICKSTART_CMD="$QUICKSTART_CHECKOUT_DIR/quickstart.sh \
+  -w $QUICKSTART_WORKING_DIR \
   --teardown all \
   --release master-tripleo-ci \
   --extra-vars @$CONFIGDIR/config.yml \
@@ -78,7 +79,7 @@ $QUICKSTART_CMD
 
 if [ $? -eq 0 ]; then
   echo "Quickstart run completed, copying scripts"
-  scp -r -F $HOME/.quickstart-shiftstack/ssh.config.ansible $QUICKSTART_CONFIG_DIR stack@undercloud:/home/stack/
+  scp -r -F $QUICKSTART_WORKING_DIR/ssh.config.ansible $QUICKSTART_CONFIG_DIR stack@undercloud:/home/stack/
 else
   echo "Error quickstart run failed :("
   exit 1
@@ -86,7 +87,7 @@ fi
 
 echo "---"
 echo "Now we SSH to the undercloud to run the openshift deployment:"
-echo "ssh -F $HOME/.quickstart-shiftstack/ssh.config.ansible undercloud"
+echo "ssh -F $QUICKSTART_WORKING_DIR/ssh.config.ansible undercloud"
 echo "  . stackrc"
 echo "  cd tripleo-openshift/undercloud_scripts/"
 echo "  And run the different scripts in order."
