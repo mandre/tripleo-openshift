@@ -57,4 +57,4 @@ openstack overcloud container image prepare \
   -e $HOME/tripleo-heat-templates/environments/openshift-cns.yaml \
   -e $HOME/openshift_env.yaml \
   -r $HOME/openshift_roles_data.yaml
-openstack overcloud container image upload --config-file $HOME/openshift_containers.yaml
+sudo openstack overcloud container image upload --config-file $HOME/openshift_containers.yaml
