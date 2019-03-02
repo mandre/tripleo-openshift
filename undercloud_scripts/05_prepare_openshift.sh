@@ -22,14 +22,14 @@ parameter_defaults:
   OpenShiftMasterCount: 1
   OpenShiftWorkerCount: 3
   OpenShiftInfraCount: 3
-  # OpenShiftAllInOneCount: 1
+  OpenShiftAllInOneCount: 1
   OpenShiftGlusterDisks:
     - /dev/vdb
 
   OvercloudOpenShiftMasterFlavor: oooq_openshift_master
   OvercloudOpenShiftWorkerFlavor: oooq_openshift_worker
   OvercloudOpenShiftInfraFlavor: oooq_openshift_infra
-  OvercloudOpenShiftAllInOneFlavor: oooq_openshift_infra
+  OvercloudOpenShiftAllInOneFlavor: oooq_openshift_aio
 
   DnsServers: ["192.168.23.1"]
 
