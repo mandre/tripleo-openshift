@@ -5,27 +5,7 @@ PATCH_DIR=$SCRIPTDIR/../patches/
 
 source $SCRIPTDIR/common.sh
 
-sudo yum -y install \
-  ansible \
-  curl \
-  telnet \
-  vim
-
-# This is needed to run a local checkout of the Tripleo-UI
-# curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
-# sudo yum -y install nodejs
-
-# NOTE(mandre) use centos-release-openshift-origin instead?
-#sudo yum -y install centos-release-openshift-origin311
-#sudo yum -y install openshift-ansible-playbooks
-
 set -eu
-
-# these avoid errors for the cherry-picks below
-if [ ! -f $HOME/.gitconfig ]; then
-  git config --global user.email "theboss@foo.bar"
-  git config --global user.name "TheBoss"
-fi
 
 if [ ! -d $HOME/tripleo-heat-templates ]; then
   git clone git://git.openstack.org/openstack/tripleo-heat-templates $HOME/tripleo-heat-templates
@@ -170,13 +150,3 @@ fi
 
 #   popd
 # fi
-
-# Dirty hack to ease ssh to overcloud nodes
-# Now we can just "ssh overcloud-controller-0"
-cat > ~/.ssh/config <<EOF
-Host *
-User heat-admin
-StrictHostkeyChecking no
-UserKnownHostsFile /dev/null
-EOF
-chmod 600 ~/.ssh/config

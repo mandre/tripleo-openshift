@@ -1,1 +1,2 @@
 *.log
+undercloud_scripts/prepare_host_custom.sh

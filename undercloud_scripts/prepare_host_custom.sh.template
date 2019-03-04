@@ -1,0 +1,3 @@
+#!/bin/bash
+# Add here commands you want to run when preparing the undercloud, then rename
+# the file to prepare_host_custom.sh

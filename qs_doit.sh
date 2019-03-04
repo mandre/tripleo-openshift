@@ -81,6 +81,8 @@ $QUICKSTART_CMD
 if [ $? -eq 0 ]; then
   echo "Quickstart run completed, copying scripts"
   scp -r -F $QUICKSTART_WORKING_DIR/ssh.config.ansible $QUICKSTART_CONFIG_DIR stack@undercloud:/home/stack/
+  echo "Preparing host"
+  ssh -F $HOME/.quickstart-shiftstack/ssh.config.ansible undercloud "/home/stack/tripleo-openshift/undercloud_scripts/prepare_host.sh"
 else
   echo "Error quickstart run failed :("
   exit 1
