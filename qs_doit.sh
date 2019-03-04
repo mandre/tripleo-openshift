@@ -10,13 +10,14 @@ usage () {
     echo "                      deployment, required argument"
     echo ""
     echo "Basic options:"
+    echo "  -d, --downstream    deploy using RHOSP and OCP"
     echo "  -m, --mirror <url>  use local centos mirror to save time/bandwidth"
     echo "  --no-check-deps     do not check for and install missing dependencies"
     echo "  -v, --verbose       invoke ansible-playbook with --ansible-debug"
     echo "  -h, --help          print this help and exit"
 }
 
-OPTS=`getopt -o hvm: --long help,verbose,mirror:,no-check-deps -- "$@"`
+OPTS=`getopt -o hvm:d --long help,verbose,mirror:,no-check-deps,downstream -- "$@"`
 eval set -- "$OPTS"
 
 while true; do
@@ -28,6 +29,8 @@ while true; do
     -m | --mirror)
       shift
       export NODEPOOL_CENTOS_MIRROR=$1; shift ;;
+    -d | --downstream)
+      DOWNSTREAM=1; shift ;;
     --no-check-deps)
       SKIP_DEPS_CHECK=1; shift ;;
     --) shift ; break ;;
@@ -59,6 +62,18 @@ fi
 QUICKSTART_CONFIG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CONFIGDIR="$QUICKSTART_CONFIG_DIR/quickstart"
 
+if [[ $DOWNSTREAM ]]; then
+  if [ ! $SKIP_DEPS_CHECK ]; then
+    sudo yum -y install wget
+  fi
+  wget -P $QUICKSTART_CHECKOUT_DIR http://rhos-release.virt.bos.redhat.com/ci-images/internal-requirements-new.txt
+  EXTRA_ARGS='--requirements internal-requirements-new.txt'
+  RELEASE='rhos-14'
+  export GIT_SSL_NO_VERIFY=false
+else
+  RELEASE='master-tripleo-ci'
+fi
+
 if [ ! $SKIP_DEPS_CHECK ]; then
   $QUICKSTART_CHECKOUT_DIR/quickstart.sh --install-deps
 fi
@@ -66,7 +81,7 @@ fi
 QUICKSTART_CMD="$QUICKSTART_CHECKOUT_DIR/quickstart.sh \
   -w $QUICKSTART_WORKING_DIR \
   --teardown all \
-  --release master-tripleo-ci \
+  --release $RELEASE \
   --extra-vars @$CONFIGDIR/config.yml \
   --nodes $CONFIGDIR/nodes.yml \
   --environment $QUICKSTART_WORKING_DIR/config/environments/dev_privileged_libvirt.yml \

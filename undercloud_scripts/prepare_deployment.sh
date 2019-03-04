@@ -5,9 +5,118 @@ source $SCRIPTDIR/common.sh
 
 pull_requirements.sh
 
+if [[ $OPENSHIFT_DOWNSTREAM -eq 1 ]]; then
+cat > $HOME/containers-prepare-parameter.yaml <<EOF
+parameter_defaults:
+  ContainerImagePrepare:
+    # Image label which allows the versioned tag to be looked up from the <tag>
+    # image.
+  - tag_from_label: "{version}-{release}"
+    # Do not re-tag images for openshift, BZ#1659183
+    excludes:
+    - openshift
+    # Uncomment to serve images from the undercloud registry. Images will be
+    # copied to the undercloud registry during preparation.
+    # To copy/serve from a different local registry, set the value to
+    # <address>:<port> of the registry service.
+    # push_destination: true
+
+    # Substitutions to be made when processing the template file
+    # <prefix>/share/tripleo-common/container-images/overcloud_containers.yaml.j2
+    set:
+      # Container image name components for OpenStack images.
+      namespace: registry.access.redhat.com/rhosp14
+      name_prefix: openstack-
+      name_suffix: ''
+      tag: latest
+
+      # Substitute neutron images based on driver. Can be <null>, 'ovn' or
+      # 'odl'. This is usually set automatically by detecting if odl or ovn
+      # services are deployed.
+      neutron_driver: null
+
+      # Container image name components for Ceph images.
+      # Only used if Ceph is deployed.
+      ceph_namespace: registry.access.redhat.com/rhceph
+      ceph_image: rhceph-3-rhel7
+      ceph_tag: latest
+
+      # Container image name components for OpenShift images.
+      # Only used if OpenShift is deployed.
+      openshift_etcd_namespace: registry.access.redhat.com/rhel7
+      openshift_etcd_image: etcd
+      openshift_etcd_tag: latest
+      openshift_gluster_namespace: registry.access.redhat.com/rhgs3
+      openshift_gluster_image: rhgs-server-rhel7
+      openshift_gluster_block_image: rhgs-gluster-block-prov-rhel7
+      openshift_gluster_tag: v3.11
+      openshift_heketi_namespace: registry.access.redhat.com/rhgs3
+      openshift_heketi_image: rhgs-volmanager-rhel7
+      openshift_heketi_tag: v3.11
+      # Namespace must be set to skip openshift images re-tagging
+      openshift_namespace: registry.access.redhat.com/openshift3
+      openshift_cockpit_namespace: registry.access.redhat.com/openshift3
+      openshift_asb_namespace: registry.access.redhat.com/openshift3
+      openshift_cluster_monitoring_namespace: registry.access.redhat.com/openshift3
+      openshift_configmap_reload_namespace: registry.access.redhat.com/openshift3
+      openshift_prometheus_operator_namespace: registry.access.redhat.com/openshift3
+      openshift_prometheus_config_reload_namespace: registry.access.redhat.com/openshift3
+      openshift_kube_rbac_proxy_namespace: registry.access.redhat.com/openshift3
+      openshift_kube_state_metrics_namespace: registry.access.redhat.com/openshift3
+      openshift_grafana_namespace: registry.access.redhat.com/openshift3
+
+  # Process openshift images without retagging them
+  - includes:
+    - openshift
+    # Uncomment to serve images from the undercloud registry. Images will be
+    # copied to the undercloud registry during preparation.
+    # To copy/serve from a different local registry, set the value to
+    # <address>:<port> of the registry service.
+    # push_destination: true
+
+    # Substitutions to be made when processing the template file
+    # <prefix>/share/tripleo-common/container-images/overcloud_containers.yaml.j2
+    set:
+      # Container image name components for OpenShift images.
+      # Only used if OpenShift is deployed.
+      openshift_namespace: registry.access.redhat.com/openshift3
+      openshift_tag: v3.11
+      openshift_prefix: ose
+      openshift_cockpit_namespace: registry.access.redhat.com/openshift3
+      openshift_cockpit_image: registry-console
+      openshift_cockpit_tag: v3.11
+      openshift_asb_namespace: registry.access.redhat.com/openshift3
+      openshift_asb_tag: v3.11
+      openshift_cluster_monitoring_namespace: registry.access.redhat.com/openshift3
+      openshift_cluster_monitoring_image: ose-cluster-monitoring-operator
+      openshift_cluster_monitoring_tag: v3.11
+      openshift_configmap_reload_namespace: registry.access.redhat.com/openshift3
+      openshift_configmap_reload_image: ose-configmap-reloader
+      openshift_configmap_reload_tag: v3.11
+      openshift_prometheus_operator_namespace: registry.access.redhat.com/openshift3
+      openshift_prometheus_operator_image: ose-prometheus-operator
+      openshift_prometheus_operator_tag: v3.11
+      openshift_prometheus_config_reload_namespace: registry.access.redhat.com/openshift3
+      openshift_prometheus_config_reload_image: ose-prometheus-config-reloader
+      openshift_prometheus_config_reload_tag: v3.11
+      openshift_prometheus_tag: v3.11
+      openshift_prometheus_alertmanager_tag: v3.11
+      openshift_prometheus_node_exporter_tag: v3.11
+      openshift_oauth_proxy_tag: v3.11
+      openshift_kube_rbac_proxy_namespace: registry.access.redhat.com/openshift3
+      openshift_kube_rbac_proxy_image: ose-kube-rbac-proxy
+      openshift_kube_rbac_proxy_tag: v3.11
+      openshift_kube_state_metrics_namespace: registry.access.redhat.com/openshift3
+      openshift_kube_state_metrics_image: ose-kube-state-metrics
+      openshift_kube_state_metrics_tag: v3.11
+      openshift_grafana_namespace: registry.access.redhat.com/openshift3
+      openshift_grafana_tag: v3.11
+EOF
+else
 openstack tripleo container image prepare default \
   --output-env-file $HOME/containers-prepare-parameter.yaml \
   --local-push-destination
+fi
 
 
 # Generate a roles_data with Openshift roles
@@ -15,6 +124,15 @@ if [[ $OPENSHIFT_AIO -eq 1 ]]; then
   openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/roles -o $HOME/openshift_roles_data.yaml OpenShiftAllInOne
 else
   openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/roles -o $HOME/openshift_roles_data.yaml OpenShiftMaster OpenShiftWorker OpenShiftInfra
+fi
+
+if [[ $OPENSHIFT_DOWNSTREAM -eq 1 ]]; then
+  OPENSHIFT_DEPLOYMENT_TYPE=openshift-enterprise
+  if [ -e $HOME/openshift_extra_vars ]; then
+    source $HOME/openshift_extra_vars
+  fi
+else
+  OPENSHIFT_DEPLOYMENT_TYPE=origin
 fi
 
 # Create the openshift config
@@ -40,6 +158,8 @@ parameter_defaults:
 
   DockerInsecureRegistryAddress: 192.168.24.1:8787
 
+  OpenShiftDeploymentType: $OPENSHIFT_DEPLOYMENT_TYPE
+
   OpenShiftGlobalVariables:
 
     # Allow all auth
@@ -51,7 +171,7 @@ parameter_defaults:
       kind: AllowAllPasswordIdentityProvider
 
     openshift_disable_check: memory_availability
-
+    $OPENSHIFT_ANSIBLE_EXTRA_VARS
 EOF
 
 
