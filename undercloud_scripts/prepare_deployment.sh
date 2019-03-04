@@ -3,7 +3,12 @@
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPTDIR/common.sh
 
-set -x
+pull_requirements.sh
+
+openstack tripleo container image prepare default \
+  --output-env-file $HOME/containers-prepare-parameter.yaml \
+  --local-push-destination
+
 
 # Generate a roles_data with Openshift roles
 # openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/roles -o $HOME/openshift_roles_data.yaml OpenShiftAllInOne
@@ -46,7 +51,9 @@ parameter_defaults:
       kind: AllowAllPasswordIdentityProvider
 
     openshift_disable_check: memory_availability
+
 EOF
+
 
 openstack overcloud container image prepare \
   --push-destination 192.168.24.1:8787 \
