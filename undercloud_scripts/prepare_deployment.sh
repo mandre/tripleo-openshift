@@ -11,8 +11,11 @@ openstack tripleo container image prepare default \
 
 
 # Generate a roles_data with Openshift roles
-# openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/roles -o $HOME/openshift_roles_data.yaml OpenShiftAllInOne
-openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/roles -o $HOME/openshift_roles_data.yaml OpenShiftMaster OpenShiftWorker OpenShiftInfra
+if [ $OPENSHIFT_AIO -eq 1 ]; then
+  openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/roles -o $HOME/openshift_roles_data.yaml OpenShiftAllInOne
+else
+  openstack overcloud roles generate --roles-path $HOME/tripleo-heat-templates/roles -o $HOME/openshift_roles_data.yaml OpenShiftMaster OpenShiftWorker OpenShiftInfra
+fi
 
 # Create the openshift config
 # We use the oooq_* flavors to ensure the correct Ironic nodes are used
