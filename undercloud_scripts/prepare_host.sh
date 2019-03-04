@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPTDIR=$(python -c "import os;print os.path.dirname(os.path.realpath('$0'))")
 
 cd $HOME
 
@@ -25,7 +25,7 @@ EOF
 chmod 600 $HOME/.ssh/config
 
 mkdir -p $HOME/.local/bin
-find $SCRIPTDIR -maxdepth 1 -type f -perm +a=x -print0 | xargs -0 -I {} mv {} $HOME/.local/bin
+find $SCRIPTDIR -maxdepth 1 -type f -perm +a=x -print0 | xargs -0 -I {} ln -sf {} $HOME/.local/bin
 
 if [ -x $SCRIPTDIR/prepare_host_custom.sh ]; then
   $SCRIPTDIR/prepare_host_custom.sh
@@ -36,3 +36,8 @@ if [ ! -f $HOME/.gitconfig ]; then
   git config --global user.email "theboss@foo.bar"
   git config --global user.name "TheBoss"
 fi
+
+source $HOME/stackrc
+
+# Delete default overcloud plan
+openstack overcloud plan delete overcloud

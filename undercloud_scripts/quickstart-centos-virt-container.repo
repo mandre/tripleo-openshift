@@ -1,7 +1,0 @@
-[quickstart-centos-virt-container]
-name=quickstart-centos-virt-container
-baseurl=https://cbs.centos.org/repos/virt7-container-common-candidate/x86_64/os/
-gpgcheck=0
-enabled=1
-priority=1
-includepkgs=atomic

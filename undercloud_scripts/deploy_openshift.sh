@@ -27,7 +27,7 @@ while true; do
   esac
 done
 
-if [[ $REMOVE_OLD_STACK ]]; then
+if [[ $REMOVE_OLD_STACK -eq 1 ]]; then
   echo Removing previous deployment stack...
   openstack stack delete -y --wait $OPENSHIFT_STACK_NAME || true
 elif openstack stack list | grep -q $OPENSHIFT_STACK_NAME; then
@@ -36,7 +36,7 @@ elif openstack stack list | grep -q $OPENSHIFT_STACK_NAME; then
   sleep 10
 fi
 
-if [[ $OPENSHIFT_CNS ]]; then
+if [[ $OPENSHIFT_CNS -eq 1 ]]; then
   CNS_ENV="-e $HOME/tripleo-heat-templates/environments/openshift-cns.yaml"
 fi
 

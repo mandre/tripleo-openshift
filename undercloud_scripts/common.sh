@@ -1,7 +1,5 @@
 #!/bin/bash
 
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
 USER=`whoami`
 if [ "$USER" != "stack" ]; then
     echo "Wrong user is used. Please login as stack"

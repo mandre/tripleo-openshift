@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPTDIR=$(python -c "import os;print os.path.dirname(os.path.realpath('$0'))")
 PATCH_DIR=$SCRIPTDIR/../patches/
 
 source $SCRIPTDIR/common.sh
