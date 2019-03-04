@@ -8,6 +8,12 @@ if [ "$USER" != "stack" ]; then
     exit 1
 fi
 
+if [ -f $HOME/tripleo-openshift-env ]; then
+  source $HOME/tripleo-openshift-env
+fi
+
+OPENSHIFT_AIO=${OPENSHIFT_AIO:-}
+OPENSHIFT_CNS=${OPENSHIFT_CNS:-}
 OPENSHIFT_STACK_NAME=${OPENSHIFT_STACK_NAME:-openshift}
 OPENSHIFT_STACK_EXTRA_ARGS=${OPENSHIFT_STACK_EXTRA_ARGS:-}
 
