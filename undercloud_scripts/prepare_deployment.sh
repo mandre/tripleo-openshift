@@ -180,14 +180,71 @@ parameter_defaults:
     $OPENSHIFT_ANSIBLE_EXTRA_VARS
 EOF
 
-
-openstack overcloud container image prepare \
-  --push-destination 192.168.24.1:8787 \
-  --output-env-file $HOME/openshift_docker_images.yaml \
-  --output-images-file $HOME/openshift_containers.yaml \
-  -e $HOME/tripleo-heat-templates/environments/docker.yaml \
-  -e $HOME/tripleo-heat-templates/environments/openshift.yaml \
-  -e $HOME/tripleo-heat-templates/environments/openshift-cns.yaml \
-  -e $HOME/openshift_env.yaml \
-  -r $HOME/openshift_roles_data.yaml
+# TODO(mandre) Use image prepare workflow at deploy time
+# It's currently failing to deploy downstream because of manifest issue when
+# pulling from registry.access.redhat.com and rsyslogd image that is not
+# available downstream
+if [[ $OPENSHIFT_DOWNSTREAM -eq 1 ]]; then
+  openstack overcloud container image prepare \
+    --push-destination 192.168.24.1:8787 \
+    --output-env-file $HOME/openshift_docker_images.yaml \
+    --output-images-file $HOME/openshift_containers.yaml \
+    --set openshift_namespace=registry.access.redhat.com/openshift3 \
+    --set openshift_tag="v3.11" \
+    --set openshift_prefix="ose" \
+    --set openshift_cockpit_namespace="registry.access.redhat.com/openshift3" \
+    --set openshift_cockpit_image="registry-console" \
+    --set openshift_cockpit_tag="v3.11" \
+    --set openshift_etcd_namespace="registry.access.redhat.com/rhel7" \
+    --set openshift_etcd_image="etcd" \
+    --set openshift_etcd_tag="latest" \
+    --set openshift_gluster_namespace="registry.access.redhat.com/rhgs3" \
+    --set openshift_gluster_image="rhgs-server-rhel7" \
+    --set openshift_gluster_block_image="rhgs-gluster-block-prov-rhel7" \
+    --set openshift_gluster_tag="v3.11" \
+    --set openshift_heketi_namespace="registry.access.redhat.com/rhgs3" \
+    --set openshift_heketi_image="rhgs-volmanager-rhel7" \
+    --set openshift_heketi_tag="v3.11" \
+    --set openshift_asb_namespace="registry.access.redhat.com/openshift3" \
+    --set openshift_asb_tag="v3.11" \
+    --set openshift_cluster_monitoring_namespace='registry.access.redhat.com/openshift3' \
+    --set openshift_cluster_monitoring_image='ose-cluster-monitoring-operator' \
+    --set openshift_cluster_monitoring_tag='v3.11' \
+    --set openshift_configmap_reload_namespace='registry.access.redhat.com/openshift3' \
+    --set openshift_configmap_reload_image='ose-configmap-reloader' \
+    --set openshift_configmap_reload_tag='v3.11' \
+    --set openshift_prometheus_operator_namespace='registry.access.redhat.com/openshift3' \
+    --set openshift_prometheus_operator_image='ose-prometheus-operator' \
+    --set openshift_prometheus_operator_tag='v3.11' \
+    --set openshift_prometheus_config_reload_namespace='registry.access.redhat.com/openshift3' \
+    --set openshift_prometheus_config_reload_image='ose-prometheus-config-reloader' \
+    --set openshift_prometheus_config_reload_tag='v3.11' \
+    --set openshift_prometheus_tag='v3.11' \
+    --set openshift_prometheus_alertmanager_tag='v3.11' \
+    --set openshift_prometheus_node_exporter_tag='v3.11' \
+    --set openshift_oauth_proxy_tag='v3.11' \
+    --set openshift_kube_rbac_proxy_namespace='registry.access.redhat.com/openshift3' \
+    --set openshift_kube_rbac_proxy_image='ose-kube-rbac-proxy' \
+    --set openshift_kube_rbac_proxy_tag='v3.11' \
+    --set openshift_kube_state_metrics_namespace='registry.access.redhat.com/openshift3' \
+    --set openshift_kube_state_metrics_image='ose-kube-state-metrics' \
+    --set openshift_kube_state_metrics_tag='v3.11' \
+    --set openshift_grafana_namespace='registry.access.redhat.com/openshift3' \
+    --set openshift_grafana_tag='v3.11' \
+    -e $HOME/tripleo-heat-templates/environments/docker.yaml \
+    -e $HOME/tripleo-heat-templates/environments/openshift.yaml \
+    -e $HOME/tripleo-heat-templates/environments/openshift-cns.yaml \
+    -e $HOME/openshift_env.yaml \
+    -r $HOME/openshift_roles_data.yaml
+else
+  openstack overcloud container image prepare \
+    --push-destination 192.168.24.1:8787 \
+    --output-env-file $HOME/openshift_docker_images.yaml \
+    --output-images-file $HOME/openshift_containers.yaml \
+    -e $HOME/tripleo-heat-templates/environments/docker.yaml \
+    -e $HOME/tripleo-heat-templates/environments/openshift.yaml \
+    -e $HOME/tripleo-heat-templates/environments/openshift-cns.yaml \
+    -e $HOME/openshift_env.yaml \
+    -r $HOME/openshift_roles_data.yaml
+fi
 sudo openstack overcloud container image upload --config-file $HOME/openshift_containers.yaml

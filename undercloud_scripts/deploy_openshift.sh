@@ -41,6 +41,7 @@ if [[ $OPENSHIFT_CNS -eq 1 ]]; then
 fi
 
 # Deploy the openshift stack
+# TODO(mandre) Use -e $HOME/containers-prepare-parameter.yaml
 pushd $HOME
 openstack overcloud deploy \
   --templates $HOME/tripleo-heat-templates \
