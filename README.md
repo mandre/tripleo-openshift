@@ -5,30 +5,16 @@ with tripleo-quickstart.
 
 ./qs_doit.sh 
 
-This will run quickstart and should end like this:
+Now we SSH to the undercloud to run the openshift deployment::
 
-##################################
-Virtual Environment Setup Complete
-##################################
+  ssh -F $HOME/.quickstart-shiftstack/ssh.config.ansible undercloud
 
-Access the undercloud by:
+Adjust the `$HOME/tripleo-openshift-env` file to match the desired deployment. The options are:
 
-    ssh -F /home/shardy/.quickstart-shiftstack/ssh.config.ansible undercloud
+* OPENSHIFT\_AIO: set it to `1` to deploy openshift on an all-in-one node.
+* OPENSHIFT\_CNS: set it to `1` to deploy openshift with glusterfs. This needs
+  at least 3 worker nodes and 3 infra nodes.
+* OPENSHIFT\_DOWNSTREAM: set it to `1` to deploy OCP instead of origin.
 
-Follow the documentation in the link below to complete your deployment.
-
-    http://ow.ly/c44w304begR
-
-##################################
-Virtual Environment Setup Complete
-##################################
-
-
-
-Now we SSH to the undercloud to run the openstack/openshift deployment::
-
-  ssh -F /home/shardy/.quickstart-shiftstack/ssh.config.ansible undercloud
-  . stackrc
-  cd tripleo-openshift/undercloud_scripts/
-
-And run the different scripts in order.
+Finally run `prepare_deployment.sh` to generate the configuration files and
+`deploy_openshift.sh` to deploy openshift.

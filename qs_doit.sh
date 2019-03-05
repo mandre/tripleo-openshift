@@ -107,6 +107,5 @@ fi
 echo "---"
 echo "Now we SSH to the undercloud to run the openshift deployment:"
 echo "ssh -F $QUICKSTART_WORKING_DIR/ssh.config.ansible undercloud"
-echo "  . stackrc"
-echo "  cd tripleo-openshift/undercloud_scripts/"
-echo "  And run the different scripts in order."
+echo ""
+echo "And run prepare_deployment.sh and deploy_openshift.sh."
