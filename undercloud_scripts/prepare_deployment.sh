@@ -21,11 +21,7 @@ parameter_defaults:
     # Do not re-tag images for openshift, BZ#1659183
     excludes:
     - openshift
-    # Uncomment to serve images from the undercloud registry. Images will be
-    # copied to the undercloud registry during preparation.
-    # To copy/serve from a different local registry, set the value to
-    # <address>:<port> of the registry service.
-    # push_destination: true
+    push_destination: true
 
     # Substitutions to be made when processing the template file
     # <prefix>/share/tripleo-common/container-images/overcloud_containers.yaml.j2
@@ -74,11 +70,7 @@ parameter_defaults:
   # Process openshift images without retagging them
   - includes:
     - openshift
-    # Uncomment to serve images from the undercloud registry. Images will be
-    # copied to the undercloud registry during preparation.
-    # To copy/serve from a different local registry, set the value to
-    # <address>:<port> of the registry service.
-    # push_destination: true
+    push_destination: true
 
     # Substitutions to be made when processing the template file
     # <prefix>/share/tripleo-common/container-images/overcloud_containers.yaml.j2
