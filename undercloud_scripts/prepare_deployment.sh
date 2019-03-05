@@ -3,6 +3,12 @@
 SCRIPTDIR=$(python -c "import os;print os.path.dirname(os.path.realpath('$0'))")
 source $SCRIPTDIR/common.sh
 
+echo "Preparing openshift environment with:
+OPENSHIFT_AIO=${OPENSHIFT_AIO:-}
+OPENSHIFT_CNS=${OPENSHIFT_CNS:-}
+OPENSHIFT_DOWNSTREAM=${OPENSHIFT_DOWNSTREAM:-}
+"
+
 pull_requirements.sh
 
 if [[ $OPENSHIFT_DOWNSTREAM -eq 1 ]]; then

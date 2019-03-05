@@ -31,7 +31,7 @@ if [[ $REMOVE_OLD_STACK -eq 1 ]]; then
   echo Removing previous deployment stack...
   openstack stack delete -y --wait $OPENSHIFT_STACK_NAME || true
 elif openstack stack list | grep -q $OPENSHIFT_STACK_NAME; then
-  echo WARNING openshift is already deployed, assuming udate
+  echo -e "\e[31m[WARNING]\e[0m openshift is already deployed, assuming udate"
   echo Press Ctl-C to cancel
   sleep 10
 fi
