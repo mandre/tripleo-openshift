@@ -13,10 +13,6 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # Apply any patches needed
   pushd $HOME/tripleo-heat-templates
 
-  # Introduce OpenShiftAnsiblePath parameter
-  # https://review.openstack.org/#/c/632641/
-  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/41/632641/3 && git cherry-pick FETCH_HEAD
-
   # Let openshift-ansible manage openvswitch
   # https://review.openstack.org/#/c/624021/
   #git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/21/624021/3 && git cherry-pick FETCH_HEAD
@@ -29,26 +25,6 @@ if [ ! -d $HOME/tripleo-common ]; then
 
   # Apply any patches needed
   pushd $HOME/tripleo-common
-
-  # Introduce a --plan option to replace --config-download-dir
-  # https://review.openstack.org/#/c/628959/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/59/628959/5 && git cherry-pick FETCH_HEAD
-
-  # Add ability to run osa playbooks from tripleo-deploy-openshift
-  # https://review.openstack.org/#/c/628960/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/60/628960/7 && git cherry-pick FETCH_HEAD
-
-  # Pass additional args to tripleo-deploy-openshift as ansible options
-  # https://review.openstack.org/#/c/628961/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/61/628961/6 && git cherry-pick FETCH_HEAD
-
-  # Option to run osa playbooks from path
-  # https://review.openstack.org/#/c/628962/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/62/628962/6 && git cherry-pick FETCH_HEAD
-
-  # Switch to podman for tripleo-deploy-openshift
-  # https://review.openstack.org/#/c/628498/
-  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/98/628498/9 && git cherry-pick FETCH_HEAD
 
   # Rebuild mistral-executor image
   mkdir -p ~/mistral-executor-image
