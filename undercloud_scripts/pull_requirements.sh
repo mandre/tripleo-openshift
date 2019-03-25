@@ -17,6 +17,18 @@ if [ ! -d $HOME/tripleo-heat-templates ]; then
   # https://review.openstack.org/#/c/624021/
   #git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/21/624021/3 && git cherry-pick FETCH_HEAD
 
+  # [WIP] Order gluster inventory with new nodes last
+  # https://review.openstack.org/#/c/644543/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/43/644543/3 && git cherry-pick FETCH_HEAD
+
+  # Stop loading nf_conntrack_proto_sctp module
+  # https://review.openstack.org/#/c/643407/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/07/643407/3 && git cherry-pick FETCH_HEAD
+
+  # Switch OpenShift nodes to use Podman
+  # https://review.openstack.org/#/c/645492/
+  git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/92/645492/3 && git cherry-pick FETCH_HEAD
+
   popd
 fi
 
@@ -25,6 +37,10 @@ if [ ! -d $HOME/tripleo-common ]; then
 
   # Apply any patches needed
   pushd $HOME/tripleo-common
+
+  # Mount openshift-ansible working dir with 'z' option
+  # https://review.openstack.org/#/c/645979/
+  git fetch https://git.openstack.org/openstack/tripleo-common refs/changes/79/645979/1 && git cherry-pick FETCH_HEAD
 
   # Rebuild mistral-executor image
   mkdir -p ~/mistral-executor-image
